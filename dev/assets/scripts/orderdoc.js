@@ -6,6 +6,7 @@ import {
   } 
 from './index.min.js';
 import { URI_UPLOAD} from './helpers/const.min.js';
+import { DragDrop } from './index.min.js';
 
 const DDocument = function() {
       let dd = this; 
@@ -31,7 +32,8 @@ const DDocument = function() {
             })
             dd.reader = new FileReader();            
             dd.reader.addEventListener('load', (event) => {dd.fileContent = event.target.result});
-            dd.form = dd.uploadDocumentForm();
+            //dd.form = dd.uploadDocumentForm();
+            dd.form = dd.dragAndDropUploadForm();
             return dd;
       }
       
@@ -109,6 +111,19 @@ const DDocument = function() {
             
       }
 
+      dd.dragAndDropUploadForm = () => {  
+            const drapDrop = new DragDrop().init({
+                  id: 'uploader',
+                  config: {
+                      message: 'Kéo thả file vào đây để tải lên',
+                      label: 'Ấn vào đây để chọn file',       
+                      multiple: true,
+                      accept: 'application/pdf',
+                  }
+            });
+            return drapDrop;
+      }
+
       dd.uploadDocumentForm = () => {
             let message = createFormItem({
                   tag: 'p',
@@ -149,7 +164,7 @@ const DDocument = function() {
                               children: [ inputFile,]
                         }),
                   ]
-            })
+            }) 
 
             return {
                   form: mainForm,

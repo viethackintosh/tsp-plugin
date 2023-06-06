@@ -77,6 +77,6 @@ if (strpos(COMPLIER, $ext) !== false) {
       } 
 }
 
-$output = shell_exec('rsync -avzhe ssh --progress --delete --exclude-from=exclude.txt  --chown=www-data:www-data --perms --chmod=Du=rwx,Dgo=rx,Fu=rw,Fog=r ' .__DIR__. '/  root@45.32.123.235:/home/nginx/sites/indepgiasi/blog/wp-content/plugins/tinsinhphuc/');
-echo $output;
+//$output = shell_exec('rsync -avzhe ssh --progress --delete --exclude-from=exclude.txt  --chown=www-data:www-data --perms --chmod=Du=rwx,Dgo=rx,Fu=rw,Fog=r ' .__DIR__. '/  root@45.32.123.235:/home/nginx/sites/indepgiasi/blog/wp-content/plugins/tinsinhphuc/');
+//echo $output;
 ?> 

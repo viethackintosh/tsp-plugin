@@ -30,7 +30,7 @@ if (! class_exists('Orderdoc')) {
             public function importScript() {
                   global $pagenow;
                   //echo 'pagenow '. $pagenow; //post.php edit.php?post_type=product users.php user-edit.php edit.php?post_type=shop_order
-                  $pID = $_GET['post'];
+                  $pID = isset($_GET['post'])?$_GET['post']:0;
                   $link = plugins_url().'/'.$this->pluginName.'/';
                   $editPost = $pagenow == 'edit.php' &&  $_GET['post_type'] == 'shop_order';
                   $postPhp = $pagenow == 'post.php' && $this->checkPostType($pID);

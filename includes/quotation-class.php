@@ -55,7 +55,7 @@ if (! class_exists('Quotation')) {
         public function importScript() {
             global $pagenow;
             //echo 'pagenow '. $pagenow; //post.php edit.php?post_type=product users.php user-edit.php edit.php?post_type=shop_order
-            $pID = $_GET['post'];
+            $pID = isset($_GET['post'])?$_GET['post']:0;
             $link = plugins_url().'/'.$this->pluginName.'/';
             $quotationPage = $pagenow == 'admin.php' && $_GET['page'] == $this->pageSlug;
             $editPost = $pagenow == 'edit.php' && ($_GET['post_type'] == 'product' || $_GET['post_type'] == 'shop_order');

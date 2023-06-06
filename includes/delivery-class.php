@@ -41,7 +41,7 @@ if (! class_exists('Delivery')) {
          */ 
         public function importScript() {
             global $pagenow;
-            $pID = $_GET['post'];
+            $pID = isset($_GET['post'])?$_GET['post']:0;
             $link = plugins_url().'/'.$this->pluginName.'/';
             $quotationPage = $pagenow == 'admin.php' && $_GET['page'] == $this->pageSlug;
             $editPost = $pagenow == 'edit.php' && ($_GET['post_type'] == 'shop_order');
