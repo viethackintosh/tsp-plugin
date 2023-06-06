@@ -8,7 +8,7 @@ if (! class_exists('Delivery')) {
         public $pageSlug = 'phieugiaohang'; // tên trang được tạo trong wp-admin ex: http://localhost/wp-admin/admin.php?page=post
         
         public $handle = 'delivery';
-        public $jsFile = 'assets/scripts/delivery.min.js'; // link dẫn đến file javascript dùng để xử lý tại client
+        public $jsFile = 'assets/scripts/delivery.js'; // link dẫn đến file javascript dùng để xử lý tại client
         public $cssFile='assets/scss/app.css'; // link dẫn đến file css
 
         public static function get_instance(){

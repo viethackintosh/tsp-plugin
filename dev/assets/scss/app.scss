@@ -1,7 +1,9 @@
-@import '../../../../tspmaster/dev/assets/scss/modal.scss';
-@import '../../../../tspmaster/dev/assets/scss/notice.scss';
-@import '../../../../tspmaster/dev/assets/scss/tab.scss';
-@import '../../../../tspmaster/dev/assets/scss/accordion.scss';
+@import './modal.scss';
+@import './notice.scss';
+@import './tab.scss';
+@import './accordion.scss';
+@import './dragdrop.scss';
+
 * {
   box-sizing: border-box; }
 

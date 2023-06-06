@@ -4,7 +4,7 @@ if (! class_exists('Quotation')) {
         protected static $instance;	
         
         public $handle = 'quotation';
-        public $jsFile = 'assets/scripts/quotation.min.js'; // link dẫn đến file javascript dùng để xử lý tại client
+        public $jsFile = 'assets/scripts/quotation.js'; // link dẫn đến file javascript dùng để xử lý tại client
         public $cssFile='assets/scss/app.min.css'; // link dẫn đến file css
 
         public $pageSlug = 'baogia'; // thay thế menu slug

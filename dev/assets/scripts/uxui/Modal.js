@@ -1,4 +1,4 @@
-import { buildTag } from "./buildtag.js";
+import { buildTag } from "../helpers/buildtag.js";
 
 const isNodeDOM = element => {
     return element instanceof Element;

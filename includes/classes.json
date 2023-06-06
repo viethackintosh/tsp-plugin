@@ -1,4 +1,5 @@
 {
+    "master": "master-class.php",
     "product-route": "product-routes-class.php",
     "order-routes": "order-routes-class.php",
     "user-routes": "user-routes-class.php",

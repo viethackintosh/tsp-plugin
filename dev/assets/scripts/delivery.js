@@ -1,12 +1,8 @@
-import {  
-  Master,
-  createFormItem,
-  Accordion,
-  masterNotice,
-  masterModal
-}
-  from './index.min.js';
-import { DELIVERY_TEMPLATE_API } from './helpers/const.min.js';
+import { Master, masterNotice, masterModal  } from './master.js';
+import { createFormItem } from './helpers/formgroup.js';
+import { Accordion } from './uxui/Accordion.js';
+
+import { DELIVERY_TEMPLATE_API } from './helpers/const.js';
 
 const Delivery = function () {
   let dl = new Master();

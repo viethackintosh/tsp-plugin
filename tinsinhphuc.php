@@ -38,9 +38,9 @@ if (! class_exists('tinsinhphuc')) {
 		}
 
 		public function KiemtraPlugin() {
-			if (! class_exists('tspMaster')) $this->ThongbaoLoi();
+			//if (! class_exists('tspMaster')) $this->ThongbaoLoi();
 			// nếu plugin cha có thì nạp plugin
-			else $this->TudongTaiFile();	
+			$this->TudongTaiFile();	
 		
 		}
 

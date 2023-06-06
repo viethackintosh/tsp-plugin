@@ -1,5 +1,5 @@
-import { buildTag } from "../helpers/buildtag.min.js";
-import { isNodeDOM } from '../helpers/formgroup.min.js';
+import { buildTag } from "../helpers/buildtag.js";
+import { isNodeDOM } from '../helpers/formgroup.js';
 
 const Tabs = function () {
      let tab = this;

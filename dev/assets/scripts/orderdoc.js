@@ -1,12 +1,8 @@
-import {
-      fchRequest,        
-      createFormItem,
-      masterNotice, 
-      masterModal,
-  } 
-from './index.min.js';
-import { URI_UPLOAD} from './helpers/const.min.js';
-import { DragDrop } from './index.min.js';
+import { fchRequest } from './helpers/fetch.js';
+import { createFormItem } from './helpers/formgroup.js';
+import { masterModal, masterNotice } from './master.js';
+import { URI_UPLOAD} from './helpers/const.js';
+import { DragDrop } from './uxui/Dragdrop.js';
 
 const DDocument = function() {
       let dd = this; 
@@ -97,11 +93,10 @@ const DDocument = function() {
       dd.uploadDocument = ({event}) => {
             event.preventDefault();
             let target = event.target.closest('a');
-            let uploadForm = masterModal.modal.querySelector('.body .upload__wrapper');
-            let uploadToServer = masterModal.modal.querySelector('.footer .upload__toserver');
-
-            if (! uploadForm) masterModal.modal.querySelector('.body').append(dd.form.form);
-            if (! uploadToServer) masterModal.modal.querySelector('.footer').append(dd.uploadButtonFiles({target}));
+            let uploadForm = masterModal.modal.body.querySelector('#uploader');
+            let uploadToServer = masterModal.modal.footer.querySelector('.upload__toserver');
+            if (! uploadForm) masterModal.modal.body.append(dd.form.drag.main);
+            if (! uploadToServer) masterModal.modal.footer.append(dd.uploadButtonFiles({target}));
             else uploadToServer.target = target;
             masterModal.open({ options: {
                         title: `Bạn ${target.owner.title} cho #${target.owner.ID}`,                  

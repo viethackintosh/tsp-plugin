@@ -1,4 +1,4 @@
-import { buildTag } from "./buildtag.js";
+import { buildTag } from "../helpers/buildtag.js";
 const DRAP_DROPPER = `<div class="drag__wrapper">        
         <label class="drag__label label">
             <span class="label__title title">Click here select files</span>

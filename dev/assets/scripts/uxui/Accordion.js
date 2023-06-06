@@ -1,4 +1,4 @@
-import { createFormItem, isNodeDOM } from '../helpers/formgroup.min.js';
+import { createFormItem, isNodeDOM } from '../helpers/formgroup.js';
 
 const Accordion = function() {
     let acc = this;

@@ -65,7 +65,7 @@ if (strpos(COMPLIER, $ext) !== false) {
             $link = $targetDir.'/app.min.css';           
             $sassRs = shell_exec('sass '.$lastUpdateFile .' ' . $link .' --style compressed'); 
       } else {
-            $link = $targetDir.'/'.$fileInfo['filename'].'.min.'.$ext;
+            $link = $targetDir.'/'.$fileInfo['filename'].'.'.$ext;
             $kindApi = $api[$ext];
             $content = file_get_contents($lastUpdateFile);
             $minified = getCompressFromAPI($kindApi, $content);

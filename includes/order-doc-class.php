@@ -6,7 +6,7 @@ if (! class_exists('Orderdoc')) {
             protected static $instance;	
 
             public $handle = 'orderdoc';
-            public $jsFile = 'assets/scripts/orderdoc.min.js'; // link dẫn đến file javascript dùng để xử lý tại client
+            public $jsFile = 'assets/scripts/orderdoc.js'; // link dẫn đến file javascript dùng để xử lý tại client
             public $cssFile= 'assets/scss/app.css'; // link dẫn đến file css
 
             public $uploaddir; 

@@ -1,4 +1,4 @@
-import { buildTag } from '../helpers/buildtag.min.js';
+import { buildTag } from '../helpers/buildtag.js';
 /**
  * notice hiển thị thông báo bằng pop push 
  */

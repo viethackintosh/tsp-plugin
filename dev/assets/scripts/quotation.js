@@ -1,13 +1,9 @@
-import {
-    Master,
-    createFormItem,
-    Accordion, 
-    masterNotice, 
-    masterModal,    
-} 
-from './index.min.js';
-import { QUOTATION_TEMPLATE_API } from './helpers/const.min.js';
-import { trantlateNumbertoVNString } from "./helpers/numbytext.min.js";
+import { Master, masterModal, masterNotice } from './master.js';
+import { Accordion } from  './uxui/Accordion.js';
+import { createFormItem } from './helpers/formgroup.js'
+
+import { QUOTATION_TEMPLATE_API } from './helpers/const.js';
+import { trantlateNumbertoVNString } from "./helpers/numbytext.js";
 
 const Quotation = function() {
     let qt = new Master();

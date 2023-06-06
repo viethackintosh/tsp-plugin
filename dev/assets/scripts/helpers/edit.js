@@ -1,4 +1,4 @@
-import {  buildTag } from "../index.min.js";
+import {  buildTag } from './buildtag.js';
 
 const Editor = function() {
     let e = this;

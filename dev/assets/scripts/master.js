@@ -1,6 +1,10 @@
-import { Notice, Modal, fchRequest, createFormItem } from "./index.min.js"
-import { Editor } from "./helpers/edit.min.js";
-import { USER_API, ORDER_API, PRODUCT_API} from './helpers/const.min.js'
+import { Notice } from './uxui/Notice.js';
+import { Modal } from './uxui/Modal.js';
+import { fchRequest } from './helpers/fetch.js';
+import { createFormItem } from './helpers/formgroup.js';
+
+import { Editor } from "./helpers/edit.js";
+import { USER_API, ORDER_API, PRODUCT_API} from './helpers/const.js'
 
 const Master = function() {
     let ms = this;
@@ -985,7 +989,7 @@ const masterNotice = new Notice().init({
 });   
 const masterModal = new Modal().init({
     id:'modalmaster',
-    options: {
+    config: {
         clear: true, 
         title: 'Thông báo',
         header: true,
