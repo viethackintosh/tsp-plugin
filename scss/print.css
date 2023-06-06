@@ -1,0 +1,18 @@
+@media print {   
+     * {
+          display: block;
+     } 
+     #adminmenuwrap,#wpadminbar, #adminmenumain,#wpfooter, style, script, title {
+          display: none;
+     }
+     #quotation {
+          display: block;
+     }
+     #wpcontent {
+          margin-left: 0;
+          background-color: black;
+     }
+     .quotation__title, .quotation__left {
+          display: none
+     }
+}
