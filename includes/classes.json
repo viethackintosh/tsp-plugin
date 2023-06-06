@@ -1,0 +1,10 @@
+{
+    "product-route": "product-routes-class.php",
+    "order-routes": "order-routes-class.php",
+    "user-routes": "user-routes-class.php",
+    "tsp":"tsp-class.php",
+    "baogia":"quotation-class.php",
+    "delivery":"delivery-class.php",
+    "orderdoc":"order-doc-class.php"
+   
+}  
