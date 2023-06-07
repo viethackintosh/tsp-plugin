@@ -101,7 +101,7 @@ const Modal = function() {
     }
 
     md.open = ({ config }) => {    
-        if (config)  Object.entries(config).map(([method, paramater])=> md[method]({modal: modalIn, paramater }));            
+        if (config)  Object.entries(config).map(([method, paramater])=> md[method]({modal: md.modal, paramater }));            
         document.body.style.overflow = 'hidden'; 
         md.modal.main.classList.add('open');        
     }

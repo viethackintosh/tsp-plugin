@@ -34,12 +34,12 @@ if (! class_exists('UserRoutes')) {
         }
 
         // lấy thông tin của user 
-        public function getUseByID($id) {
+        public static function getUseByID($id) {
             return get_user_meta((int)$id,'',true);            
         }
 
         // lọc các trường cần thiết thông tin khách hàng
-        public function filterUserField($user) {
+        public static function filterUserField($user) {
             $filer = 'user_id|nickname|first_name|last_name|billing_company|billing_address_1|billing_phone|shipping_phone|billing_email';
             $userOut = [];
             foreach ($user as $key => $meta) {

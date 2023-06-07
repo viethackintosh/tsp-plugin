@@ -48,12 +48,12 @@ if (! class_exists('ProductRoutes')) {
         }
 
         // lấy id sản phẩm cha để so sánh thêm vào thông tin
-        public function getParentID($product) {           
+        public static function getParentID($product) {           
             return $product->is_type('variation')? $product->get_parent_id():$product->get_id();
         }
 
         //lấy tên sản phẩm 
-        public function getProductName($product) {
+        public static function getProductName($product) {
             $realName  = '';       
             //$product = wc_get_product($proID);
             $product = $product->is_type('variation')? wc_get_product($product->get_parent_id()):$product;    
@@ -66,7 +66,7 @@ if (! class_exists('ProductRoutes')) {
         }
 
         //lấy đơn vị sản phẩm
-        public function getUnitProduct($product) {
+        public static function getUnitProduct($product) {
             $unit  = 'pcs';         
             $product = $product->is_type('variation')? wc_get_product($product->get_parent_id()):$product;            
             if (metadata_exists ('post', $product->get_id(),'_unit_product')) {
@@ -77,7 +77,7 @@ if (! class_exists('ProductRoutes')) {
         }
 
         // lấy các thuộc tính sản phẩm
-        public function getAttributes($product) {
+        public static function getAttributes($product) {
             
             $product = $product->is_type('variation')? wc_get_product($product->get_parent_id()):$product;   
             $attributes = $product->get_attributes();
@@ -102,7 +102,7 @@ if (! class_exists('ProductRoutes')) {
         }
 
         //get quantity and price
-        public function getQuantityAndPrices($product) {                       
+        public static function getQuantityAndPrices($product) {                       
             $prefix = $product->get_type();
             // simple, variation, varible
             $fn = 'getQuantityAndPricesFor'. $prefix;

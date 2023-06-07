@@ -80,7 +80,7 @@ const DDocument = function() {
                   width :"830px"
             };
             PDFObject.embed(`${URI_UPLOAD}${owner.file}` , "#modalmaster .modal__body",docOptions);	
-            masterModal.open({ options: {
+            masterModal.open({ config: {
                         clear: true, 
                         title:`Bạn đang xem ${owner.file}`,
                         header: true,
@@ -98,7 +98,7 @@ const DDocument = function() {
             if (! uploadForm) masterModal.modal.body.append(dd.form.drag.main);
             if (! uploadToServer) masterModal.modal.footer.append(dd.uploadButtonFiles({target}));
             else uploadToServer.target = target;
-            masterModal.open({ options: {
+            masterModal.open({ config: {
                         title: `Bạn ${target.owner.title} cho #${target.owner.ID}`,                  
                         footer: true,
                   }
@@ -109,64 +109,14 @@ const DDocument = function() {
       dd.dragAndDropUploadForm = () => {  
             const drapDrop = new DragDrop().init({
                   id: 'uploader',
-                  config: {
-                      message: 'Kéo thả file vào đây để tải lên',
-                      label: 'Ấn vào đây để chọn file',       
-                      multiple: true,
+                  config: {                     
+                      label: 'Ấn hoặc kéo thả file vào đây',
+                      dataType : 'file',       
+                      multiple: false,
                       accept: 'application/pdf',
                   }
             });
             return drapDrop;
-      }
-
-      dd.uploadDocumentForm = () => {
-            let message = createFormItem({
-                  tag: 'p',
-                  className: 'upload__message',
-            });
-            let uploadFileName = createFormItem({
-                  tag: 'span',                                          
-                  innerHTML: 'file name here',
-                  className: 'upload__filename',   
-            });
-            let inputFile = createFormItem({
-                  
-                  tag: 'input',
-                  type: 'file',
-                  accept : '.pdf',
-                  id: 'filetoupload',
-                  style: 'display:none',
-                  onchange: event => dd.choiceFileChange({event}),
-                  
-            })
-            
-            let mainForm = createFormItem({
-                  tag: 'div',
-                  className: 'upload__wrapper',                 
-                  children: [ 
-                        message, 
-                        createFormItem({
-                              tag: 'p',
-                              className: 'upload__item',
-                              children: [                                    
-                                    uploadFileName,
-                              ]
-                        }),
-                        createFormItem( { 
-                              tag: 'label',
-                              className: 'upload__choicefile button --primary',                             
-                              innerHTML: 'Chọn file',                             
-                              children: [ inputFile,]
-                        }),
-                  ]
-            }) 
-
-            return {
-                  form: mainForm,
-                  message,
-                  uploadFileName,
-                  inputFile,
-            }
       }
 
       dd.choiceFileChange = ({ event} )=> {

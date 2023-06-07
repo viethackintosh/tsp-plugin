@@ -909,7 +909,7 @@ const Master = function() {
         // bật modal hỏi xem có muốn xoá hay không
         let deletedProduct = quotation.products.find(product => product.parentID == target);
       
-        masterModal.open({ options: {
+        masterModal.open({ config: {
                 title: 'Cảnh báo xoá sản phẩm ra khỏi báo giá',
                 content: ms.deleteProductMesage({product:deletedProduct} ),
                 clear: true,
@@ -993,7 +993,7 @@ const masterModal = new Modal().init({
         clear: true, 
         title: 'Thông báo',
         header: true,
-        footer: false,
+        footer: true,
     }
 });                  
 
