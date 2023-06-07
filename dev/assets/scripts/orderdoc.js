@@ -145,7 +145,7 @@ const DDocument = function() {
       
       dd.uploadFileToServer = async ({event} ) => {   
 
-            let file = dd.form.inputFile.files[0];            
+            let file = dd.form.input.files[0];            
             let target = event.target.target; //     
 
             if (file) {
@@ -161,8 +161,7 @@ const DDocument = function() {
                         });
                       
                         if (resData.result ) { 
-                              // thay thế 
-                              
+                              // thay thế                               
                               target.owner.file = file.name;
                               let uploadDocument = target.querySelector('.upload--document');
                               uploadDocument.innerHTML = file.name;

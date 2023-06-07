@@ -108,7 +108,7 @@ const DragDrop = function() {
 
     //lấy file từ drag area hiển thị sang result
     dad.getfile = ({ tranfer, dragger }) => {
-        
+        let tempTranfer = new DataTransfer();
         if (dragger.input.multiple === false) {
             // tìm file đầu tiên thoả mãn accept
             let files = Array.from(tranfer.files).filter(file => 
