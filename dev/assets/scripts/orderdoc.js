@@ -5,9 +5,7 @@ import { URI_UPLOAD} from './helpers/const.js';
 import { DragDrop } from './uxui/Dragdrop.js';
 
 const DDocument = function() {
-      let dd = this; 
-      dd.fileContent;
-      dd.reader;
+      let dd = this;      
       dd.form;
       dd.init = () => {
             let docLinks = document.querySelectorAll('.order--document');
@@ -25,10 +23,7 @@ const DDocument = function() {
                   if (previewButton) previewButton.onclick = event => dd.previewDocument({event});
                   let uploadButton = doclink.querySelector('.upload--document');
                   if (uploadButton) uploadButton.onclick = event => dd.uploadDocument({event});                  
-            })
-            dd.reader = new FileReader();            
-            dd.reader.addEventListener('load', (event) => {dd.fileContent = event.target.result});
-            //dd.form = dd.uploadDocumentForm();
+            })         
             dd.form = dd.dragAndDropUploadForm();
             return dd;
       }
@@ -37,7 +32,7 @@ const DDocument = function() {
       dd.removeButton = () => 
             createFormItem({
                   tag: 'span',
-                  className: 'dashicons dashicons-trash delete__button',                 
+                  className: 'dashicons dashicons-no-alt delete__button',                 
                   onclick: event => dd.removeDocument({event, }),
             })
 
@@ -119,14 +114,6 @@ const DDocument = function() {
             return drapDrop;
       }
 
-      dd.choiceFileChange = ({ event} )=> {
-            let file = event.target.files[0];
-            let fileName = event.target.files[0].name;
-            let uploadFilename = document.querySelector('.upload__filename');
-            if (uploadFilename) uploadFilename.innerHTML = fileName;
-            dd.reader.readAsDataURL(file);
-      }
-
       dd.uploadButtonFiles = ({target}) => 
             createFormItem({
                   tag: 'p',
@@ -143,23 +130,22 @@ const DDocument = function() {
                   
             })
       
-      dd.uploadFileToServer = async ({event} ) => {   
-
-            let file = dd.form.input.files[0];            
+      dd.uploadFileToServer = async ({event} ) => { 
+            let file = dd.form.drag.input.files[0];   
             let target = event.target.target; //     
-
-            if (file) {
-
-                  let fileInfo = {name: file.name, type:file.type, fileContent:  dd.fileContent };
+            let body = new FormData();
+            body.append('files', file);
+            if (file) {                  
                   try {
                         let resData = await fchRequest({
                               ftchURI: '/wp-json/tinsinhphuc/document/upload',
                               data: {
                                     method: 'POST',
-                                    body: JSON.stringify({owner: target.owner, file:  fileInfo}),
+                                    body,
+                                    headers: {},
                               }
                         });
-                      
+                        console.log(resData);
                         if (resData.result ) { 
                               // thay thế                               
                               target.owner.file = file.name;

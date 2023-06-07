@@ -86,14 +86,17 @@ if (! class_exists('Orderdoc')) {
 
                   $title = $file == ''?$linkData['title']:$file;
                   
-                  $delete = $file == ''? '': '<span class="dashicons dashicons-no-alt"></span>&nbsp;';
+                  $delete = $file == ''? '': '<span class="dashicons dashicons-no-alt delete__button"></span>&nbsp;';
                   $titleClass = $file == ''? 'upload--document': 'preview--document';
                   $defautLink = '<a class="order--document" data=\''.json_encode($data).'\' ><span class="title '.$titleClass.'">'. $title.'</span> '. $delete.'</a> | ' ;                  
                   return $defautLink;
             }
 
             public function documentUpload(WP_REST_Request $req) {
-                  $body = json_decode($req->get_body()); 
+                  $file =  $_FILES['files'];
+
+                  
+                 /* $body = json_decode($req->get_body()); 
                   $owner = $body->owner;
 
                   $base64String = $body->file->fileContent;
@@ -113,9 +116,9 @@ if (! class_exists('Orderdoc')) {
                   $updateResult = $exist? update_post_meta($owner->ID, 'orders',  $exitDocument):
                                     add_post_meta($owner->ID, 'orders', $exitDocument);
 
-                  $message = $updateResult? 'Đã tải lên & lưu dữ liệu': 'Xảy ra lỗi! vui lòng xem lại';
+                  $message = $updateResult? 'Đã tải lên & lưu dữ liệu': 'Xảy ra lỗi! vui lòng xem lại';*/
 
-                  return ['code' => 200, 'result'=>  $updateResult, 'message' => $message ];
+                  return ['code' => 200, 'result'=>  'tam', 'message' =>  $file ];
             }
             
             public function documentRemove(WP_REST_Request $req) {
@@ -132,12 +135,7 @@ if (! class_exists('Orderdoc')) {
                   return ['code' => 200, 'message' => 'có file'];
             }
 
-            public function decodeBase64FileContent($content) {
-                  list($dataType, $imageData) = explode(';',  $content);                 
-                  list(, $encodedImageData) = explode(',', $imageData);                  
-                  $decodedImageData = base64_decode($encodedImageData);
-                  return $decodedImageData;
-            }
+            
       }
       
       // giải mã code base 64 dùng ghi file 
