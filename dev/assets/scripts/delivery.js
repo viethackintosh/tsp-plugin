@@ -26,7 +26,7 @@ const Delivery = function () {
           style: 'info',
           timer: 1500
         });
-      }
+      } 
       else {
 
         if (dl.data.user.nickname == order.user.nickname) {
