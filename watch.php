@@ -71,7 +71,7 @@ if (strpos(COMPLIER, $ext) !== false) {
             $minified = getCompressFromAPI($kindApi, $content);
             
             $fp = fopen($link,'w');
-            fwrite($fp, $minified);
+            fwrite($fp, $content);
             fclose($fp);
             echo 'đã biên dịch\n'; 
       } 

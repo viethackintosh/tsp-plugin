@@ -58,7 +58,7 @@ const Quotation = function() {
             }); // nếu là sản phẩm biến thể dùng parentID kiểm tra
         if (exist) {
             // gọi modal khi đã tồn tại sản phẩm                        
-            masterModal.open({ options: {
+            masterModal.open({ config: {
                     title:'Cảnh báo đã có sản phẩm trong báo giá',
                     content: qt.updateProductVariableForm({product: exist, ID, parentID, quotation}),
 

@@ -1,1 +1,383 @@
-import{Master as t,masterModal as e,masterNotice as r}from"./master.js";import{Accordion as a}from"./uxui/Accordion.js";import{createFormItem as o}from"./helpers/formgroup.js";import{QUOTATION_TEMPLATE_API as n}from"./helpers/const.js";import{trantlateNumbertoVNString as u}from"./helpers/numbytext.js";let Quotation=function(){let a=new t;a.storageName="quotation",a.title="Bảng b\xe1o gi\xe1";let n=a.onMainPage;return a.onMainPage=({layout:t,data:e})=>{let r=n({layout:t,data:e});return r=a.pushVATTocurrentLayout({vat:e?.vat,layout:t}),r=a.pushEnablePrintVATLayout({layout:t})},a.nextMethod=({quotation:t})=>{t.vat.data=a.updateVAT({products:t.products}),a.pushVATToController({vat:t.vat})},a.otherPage=()=>{Array.from(a.listButtons()).map(t=>{let e=JSON.parse(t.getAttribute("data"));Object.assign(t,{ownData:e,onclick:t=>a.updateQuotation(t)})}),a.setAddQuotaionButtons()},a.updateQuotation=t=>{t.preventDefault();let{type:e,...r}=t.target.ownData;return a[`updateQuotation${e}`]({...r,quotation:a.data})},a.updateQuotationProduct=({ID:t,parentID:r,quotation:o})=>{let n=0!==r?a.checkExistProductVariation({quotation:o,ID:t}):a.checkExistProductVariable({quotation:o,ID:t});n?e.open({options:{title:"Cảnh b\xe1o đ\xe3 c\xf3 sản phẩm trong b\xe1o gi\xe1",content:a.updateProductVariableForm({product:n,ID:t,parentID:r,quotation:o})}}):a.updateProductInQuotation({ID:t,parentID:r,quotation:o,update:!1})},a.updateProductInQuotation=async({ID:t,parentID:o,quotation:n,update:u})=>{try{let i=await a.getProduct({ID:t}),s=0!==o?o:t,c=n.products?n.products.find(t=>t.parentID==s):void 0;if(u){let p=n.products.findIndex(t=>t.parentID==c.parentID);if(0==o)n.products[p]=i;else{let d=n.products[p].prices.findIndex(t=>t.productID==i.prices[0].productID);n.products[p].prices[d]=i.prices[0]}}else 0!=o&&c?c.prices=[...c.prices,...i.prices]:n.products=n.products?[...n.products,i]:[i];let l=a.updateVAT({products:n.products});n.vat=n.vat?{...n.vat,data:l}:{data:l,status:!0},localStorage.setItem(a.storageName,JSON.stringify(n)),e.close({clear:!0}),r.open({message:`Đ\xe3 ${!0===u?"Cập nhật":"th\xeam mới"} sản phẩm v\xe0o b\xe1o gi\xe1`,icon:!0,style:"info",timer:1500})}catch{}},a.updateQuotationUser=async({ID:t,quotation:e})=>{try{let o=await a.getUser({user:t});e.user=o.user,localStorage.setItem(a.storageName,JSON.stringify(e))}catch{}finally{r.open({message:"Đ\xe3 th\xeam người d\xf9ng v\xe0o b\xe1o gi\xe1",icon:!0,style:"info",timer:1500})}},a.updateQuotationOrder=async({ID:t,quotation:e})=>{try{let o=await a.getOrder({orderId:t}),n={...e,...o};n.vat={data:a.updateVAT({products:n.products}),status:!0},localStorage.setItem(a.storageName,JSON.stringify(n)),r.open({message:`Đ\xe3 tạo lại b\xe1o gi\xe1 của đơn h\xe0ng #${t}`,icon:!0,style:"info",timer:1500})}catch{}},a.pushVATTocurrentLayout=({vat:t,layout:e})=>{if(!t)return e;t.data&&t.data.forEach(({vatName:t,vatValue:r})=>e.querySelector(`.${t}`).innerHTML=r.toString().replace(/\B(?=(\d{3})+(?!\d))/g,","));let r=e.querySelector(".products__vat");return!1===(t?.status??!1)&&(r=a.markNoprintVAT({vatRow:r,target:"products__vat"})),e},a.pushEnablePrintVATLayout=({layout:t})=>{if(!t)return t;let e=t.querySelector(".products__vat .enableprint"),r=a.createEnablePrint({ID:"products__vat",forProduct:!1,onclickMethod:a.noprintVAT});return e.append(...r),t},a.markNoprintVAT=({vatRow:t,target:e})=>{t.classList.add("noprint");let r=a.createOverlay({target:e,message:"D\xf2ng th\xe0nh tiền, kh\xf4ng được in. Bạn muốn ",restore:a.restoreVAT});return t.append(r),t},a.noprintVAT=({event:t,quotation:e})=>{let r=t.target.closest("a").target;e&&e.vat?e.vat.status=!1:e.vat={status:!1};let o=document.querySelector(`.${r}`);o=a.markNoprintVAT({vatRow:o,target:r}),localStorage.setItem(a.storageName,JSON.stringify(e))},a.restoreVAT=({event:t,quotation:e})=>{let r=t.target.closest("a").target;e.vat.status=!0;let o=document.querySelector(`.${r}`);o.classList.remove("noprint"),o.querySelector(".overlay").remove(),localStorage.setItem(a.storageName,JSON.stringify(e))},a.createSpecificationsProduct=({parentID:t,productName:e,attributes:r})=>[a.productName({productName:e,data:{ID:t,field:"productName"}}),...r?a.createAttribute({parentID:t,attributes:r}):[]],a.listButtons=()=>document.querySelectorAll(".updateQuotation"),a.setAddQuotaionButtons=()=>{let t=document.querySelector("#variable_product_options");t&&(t.onchange=t=>a.varProductOptionChange(t))},a.varProductOptionChange=t=>{Array.from(a.listButtons()).map(t=>{let e=JSON.parse(t.getAttribute("data"));Object.assign(t,{ownData:e,onclick:t=>a.updateQuotation(t)})})},a.quotationOder=async t=>{t.preventDefault();let e=JSON.parse(t.target.getAttribute("data")).productID;try{let r=await a.getOrder({orderId:e});r.user=a.filterCustomerFields(r.user)}catch{}},a.checkExistProductVariable=({quotation:t,ID:e})=>t?.products&&t?.products.find(t=>t.parentID==e),a.updateProductVariableForm=({product:t,ID:e,parentID:r,quotation:n})=>o({tag:"p",className:"Message",innerHTML:`Sản phẩm <b> ${t.productName}</b> bạn muốn th\xeam v\xe0o b\xe1o gi\xe1 đ\xe3 tồn tại! bạn c\xf3 muốn cập nhật mới kh\xf4ng?&nbsp;`,children:[{tag:"a",href:"#",class:"button btn",innerHTML:"Cập nhật mới",onclick:t=>(t.preventDefault(),a.updateProductInQuotation({ID:e,parentID:r,quotation:n,update:!0}))}]}),a.checkExistProductVariation=({quotation:t,ID:e})=>t?.products&&t?.products.find(t=>t?.prices.find(t=>t.productID==e)),a.updateProductVariation=async({productID:t,quotation:e})=>{try{let o=await a.getProduct({productID:t}),n=e.products.find(t=>t.parentID==o.product.parentID).prices;n[n.findIndex(e=>e.productID==t)]=o.product.prices[0],r.open({message:"Đ\xe3 th\xeam sản phẩm v\xe0o b\xe1o gi\xe1",icon:!0,style:"info",timer:1500})}catch{}},a.updateVAT=({products:t})=>{let e=t.map(t=>"onprint"==t.status?t.prices[0].total:0).reduce((t,e)=>t+e,0),r=[];return 0!=(r=u(r,Math.round(1.1*e),0)).length&&(r[0]=r[0].replace(",","")),[{vatName:"totalBeforeVAT",vatValue:e},{vatName:"vatPercentage",vatValue:Math.round(.1*e)},{vatName:"totalpaid",vatValue:Math.round(1.1*e)},{vatName:"byWord",vatValue:`${r.reverse().join(" ")} đồng`},]},a.updateVATFromTotal=({quotation:t})=>{t.vat.data=a.updateVAT({products:t.products}),a.pushVATToController({vat:t.vat})},a.pushVATToController=({vat:t})=>{t&&t.data.forEach(({vatName:t,vatValue:e})=>document.querySelector(`.${t}`).innerHTML=e.toString().replace(/\B(?=(\d{3})+(?!\d))/g,","))},a},quotation=new Quotation().init({id:"sheetQuotation",templateName:"templateone",restAPI:n});window.onload=function(){new a().init({id:"accordion",onlyAccordionOpen:!0})};
+import { Master, masterModal, masterNotice } from './master.js';
+import { Accordion } from  './uxui/Accordion.js';
+import { createFormItem } from './helpers/formgroup.js'
+
+import { QUOTATION_TEMPLATE_API } from './helpers/const.js';
+import { trantlateNumbertoVNString } from "./helpers/numbytext.js";
+
+const Quotation = function() {
+    let qt = new Master();
+    qt.storageName = 'quotation';
+   // let init = qt.init; 
+    qt.title ='Bảng báo giá';
+    // tạo lại phần khởi tạo đặt thù của quotation
+    let layoutMethod = qt.onMainPage;
+
+    // thêm dữ liệu vào template
+    qt.onMainPage = ({layout, data}) => {
+        let tempLayout = layoutMethod({layout, data});     
+        tempLayout = qt.pushVATTocurrentLayout({vat: data?.vat, layout });
+        tempLayout = qt.pushEnablePrintVATLayout({layout});
+        return tempLayout;
+    }
+
+    qt.nextMethod = ({quotation}) => {
+        quotation.vat.data = qt.updateVAT({products: quotation.products});        
+        qt.pushVATToController({vat: quotation.vat });
+    }
+
+    // 
+    qt.otherPage = () => {
+        let buttons = qt.listButtons();
+        Array.from(buttons).map(button => {
+            let ownData = JSON.parse(button.getAttribute('data'));
+            Object.assign(button, {
+                ownData, 
+                onclick: event => qt.updateQuotation(event)});
+            });
+          
+        qt.setAddQuotaionButtons();
+    }
+    
+    // sự kiện thêm 1 nguồn dữ liệu vào báo giá xảy ra
+    qt.updateQuotation = event => {
+        event.preventDefault();
+        let ownData = event.target.ownData;
+        let { type, ...other } = ownData;        
+        return qt[`updateQuotation${type}`]({...other, quotation: qt.data});
+    }
+
+    // thêm sản phẩm vào báo giá
+    qt.updateQuotationProduct = ({ID,  parentID,  quotation}) => {
+        // ID lúc này là của sản phẩm
+        // parentID != 0 => kiểm 
+        let exist = parentID !== 0?  
+            qt.checkExistProductVariation({quotation, ID, })
+            :qt.checkExistProductVariable({
+                quotation, ID,
+            }); // nếu là sản phẩm biến thể dùng parentID kiểm tra
+        if (exist) {
+            // gọi modal khi đã tồn tại sản phẩm                        
+            masterModal.open({ config: {
+                    title:'Cảnh báo đã có sản phẩm trong báo giá',
+                    content: qt.updateProductVariableForm({product: exist, ID, parentID, quotation}),
+
+                }
+            }); 
+
+        } else {
+            // chưa có sản phẩm cha
+            // có sản phẩm cha, chưa có sản phẩm con
+            qt.updateProductInQuotation ({ID, parentID, quotation, update: false});
+        }        
+    }    
+
+    // kiểm tra đã tồn tại thì update chưa thì thêm vào
+    qt.updateProductInQuotation = async ({ID, parentID, quotation, update}) => {
+        // tính toán cộng, vat, thành tiền, số tiền bằng chữ
+        try {             
+            let product = await qt.getProduct({ID});
+            let findID = parentID !== 0? parentID: ID;
+            let existProduct = quotation.products? quotation.products.find(pro => pro.parentID == findID): undefined; 
+            if ( ! update) { // thêm sản phẩm mới
+                /* 1. chọn sản phẩm cha -> chưa có trong báo giá
+                    // kiểm tra parentID = 0, thêm sản phẩm cha vào báo giá 
+                //2. chọn sản phẩm con -> cha chưa có trong báo giá
+                    // kiểm tra parentID != 0, tìm sản phẩm cha trong báo giá -> chưa có thêm tất cả sản phẩm vào báo giá
+                //3. chọn sản phẩm con -> sản phẩm con chưa có trong sản phẩm cha
+                    // kiểm tra parentID != 0, tìm sản phẩm cha trong báo giá -> thêm sản phẩm con vào sản phẩm cha */
+                if (parentID == 0 || ! existProduct) quotation.products = ! quotation.products? [product]: [...quotation.products, product];
+                else existProduct.prices = [...existProduct.prices, ...product.prices];                
+
+            } else { // cập nhật lại sản phẩm
+                //1. chọn sản phẩm cha -> thay thế sản phẩm cha mới
+                //2. chọn sản phẩm con -> tìm sản phẩm con -> thay thế
+                let index = quotation.products.findIndex(pro => pro.parentID == existProduct.parentID);                
+                if (parentID == 0) quotation.products[index] = product;
+                else  {
+                    let proIndex = quotation.products[index].prices.findIndex(pri => pri.productID == product.prices[0].productID);
+                    quotation.products[index].prices[proIndex] = product.prices[0];
+                } 
+            }
+            // cập nhật lại VAT        
+            let vat = qt.updateVAT({products: quotation.products});                           
+            quotation.vat = ! quotation.vat ? { data:vat, status: true }: {...quotation.vat, data:vat};
+            
+            // lưu vào localstorage
+            localStorage.setItem(qt.storageName, JSON.stringify(quotation));
+
+            masterModal.close({ clear: true});
+            masterNotice.open( {
+                message:`Đã ${update ===true ? 'Cập nhật': 'thêm mới' } sản phẩm vào báo giá`,
+                icon: true,
+                style: 'info',
+                timer: 1500
+            });
+        } catch { }          
+    
+    }
+    // thêm sản phẩm vào báo giá
+     /**
+     * xử lý phím bấm trong user
+     */
+     
+    qt.updateQuotationUser = async ({ID, quotation}) => {
+        // ID lúc này của user               
+        try {
+            let user = await qt.getUser({user: ID});
+            quotation.user = user.user;            
+            // làm động tác kiểm tra thêm mới hoặc cập nhật user vào quotations             
+            localStorage.setItem(qt.storageName, JSON.stringify(quotation));
+
+        } catch {
+            
+        } finally {
+            masterNotice.open( {
+                message:'Đã thêm người dùng vào báo giá',
+                icon: true, 
+                style: 'info',
+                timer: 1500
+            })
+            
+        }
+    }
+
+    //
+    qt.updateQuotationOrder = async ({ID, quotation}) => {
+        // ID lúc này của Order
+       // console.log(ID, quotation);
+        try {
+            let order = await qt.getOrder({orderId: ID});
+            let quotationOut = {...quotation, ...order};            
+         
+            quotationOut.vat = {
+                data: qt.updateVAT({products: quotationOut.products }),
+                status: true,
+            }
+            // lưu vào localstorage
+            localStorage.setItem(qt.storageName, JSON.stringify(quotationOut));
+
+            masterNotice.open( {
+                message:`Đã tạo lại báo giá của đơn hàng #${ID}`,
+                icon: true,
+                style: 'info',
+                timer: 1500
+            })
+        } catch {}
+        
+    }    
+        
+    // load dữ liệu lần đầu
+    qt.pushVATTocurrentLayout = ({vat, layout}) => {
+        if (! vat ) return layout;
+        if (vat.data)
+            vat.data.forEach(({vatName, vatValue}) => layout.querySelector(`.${vatName}`).innerHTML = vatValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));               
+
+        let vatRow = layout.querySelector('.products__vat');
+        let status = vat?.status ?? false;
+
+        if ( status === false ) vatRow = qt.markNoprintVAT({vatRow, target: 'products__vat'});
+        return layout;       
+    }
+
+
+    // tạo nút bỏ in tại các dòng vat
+    qt.pushEnablePrintVATLayout = ({layout}) => {
+        if (! layout) return layout;
+        let vatEnablePrint = layout.querySelector('.products__vat .enableprint');
+        let enableprint =  qt.createEnablePrint({           
+            ID: 'products__vat',
+            forProduct: false,
+            onclickMethod: qt.noprintVAT,            
+        });
+        vatEnablePrint.append(...enableprint);
+        return layout;
+    }
+
+    qt.markNoprintVAT = ({vatRow, target}) => {
+        vatRow.classList.add('noprint');
+        let overlay = qt.createOverlay({target, message:'Dòng thành tiền, không được in. Bạn muốn ',restore: qt.restoreVAT });   
+        vatRow.append(overlay);
+        return vatRow;
+    }
+
+    //
+    qt.noprintVAT = ({event, quotation}) => {
+        let target = event.target.closest('a').target;
+        let status = false;
+        
+        if (! quotation || ! quotation.vat ) quotation.vat = {status};
+        else quotation.vat.status = status;
+
+        let productVat = document.querySelector(`.${target}`);
+        productVat = qt.markNoprintVAT({vatRow: productVat, target});                    
+        localStorage.setItem(qt.storageName,JSON.stringify(quotation));
+    }
+
+    // khôi phục lại in các dòng thuế VAT
+    qt.restoreVAT = ({event, quotation}) => {
+        let target = event.target.closest('a').target;       
+        let status = true;        
+        quotation.vat.status = status;
+
+        let proVat = document.querySelector(`.${target}`);
+        proVat.classList.remove('noprint');
+        proVat.querySelector('.overlay').remove();
+        localStorage.setItem(qt.storageName, JSON.stringify(quotation));
+    }
+   
+
+    qt.createSpecificationsProduct = ({parentID, productName, attributes}) => [
+        qt.productName({ productName, data:{ ID: parentID, field: 'productName'},}),       
+        ... ! attributes? []: qt.createAttribute({parentID, attributes})
+    ]      
+
+     // lấy layout quotation
+    /*qt.pushLayoutAndDataQuotation = async column => {
+        // đọc quotation.forms = [{ name: 'abc', template: 'templateHTML', status: 'active'}, {} ]
+        let layoutContent;
+        let forms = qt.data?.forms;
+        if ( forms ) {
+            layoutContent = forms.find(form => form.status === 'active').template;
+        } else {
+            layoutContent = await fchRequest({ 
+                ftchURI: `${QUOTATION_TEMPLATE_API}/templateone`,                
+            });
+            layoutContent.status = 'active';
+            qt.data.forms = [layoutContent];
+        }        
+        
+        column.innerHTML = layoutContent.template;
+    }*/
+  
+    /**
+     * khai báo xử lý list buttons      *   
+     */
+    qt.listButtons = () =>  document.querySelectorAll('.updateQuotation');   
+    
+    // thêm sự kiện cho các link thêm dữ liệu vào quotation
+    qt.setAddQuotaionButtons = () => { 
+        // box variable_product_options thay đổi thông tin
+        let varProuctOptions = document.querySelector('#variable_product_options');
+        if (varProuctOptions) varProuctOptions.onchange = event => qt.varProductOptionChange(event);        
+        
+    }
+
+    // box tab variations change 
+    qt.varProductOptionChange = event => { 
+        let buttons = qt.listButtons();
+        Array.from(buttons).map(button => {
+            let ownData = JSON.parse(button.getAttribute('data'));
+            Object.assign(button, {
+                ownData, 
+                onclick: event => qt.updateQuotation(event)});
+            });        
+    }
+   
+    /**
+     * 
+     * @param {*} event 
+     * xử lý click trong oder
+     */
+    qt.quotationOder = async (event) => {
+        event.preventDefault();
+        let orderId = JSON.parse(event.target.getAttribute('data')).productID;
+        try {
+            let order = await qt.getOrder({orderId});
+            order.user = qt.filterCustomerFields(order.user);
+        } catch {
+
+        }
+    }
+
+    /**
+     * 
+     * @param {*} event 
+     * xử lý phím bấm trong list product
+     */   
+  
+    // kiểm tra sản phẩm có biến thể (sản phẩm cha) hoặc sản đơn
+    // lọc productID với parentID trong products      
+    qt.checkExistProductVariable = ({quotation, ID}) => 
+        quotation?.products && quotation?.products.find(product => product.parentID == ID);
+    
+    
+    //form update sản phẩm variable
+    qt.updateProductVariableForm = ({product, ID, parentID, quotation}) => 
+        createFormItem({
+            tag: 'p',
+            className:'Message',
+            innerHTML:`Sản phẩm <b> ${product.productName}</b> bạn muốn thêm vào báo giá đã tồn tại! bạn có muốn cập nhật mới không?&nbsp;`,
+            children: [ {
+                    tag:'a',
+                    href:'#',
+                    class:'button btn',
+                    innerHTML: 'Cập nhật mới',
+                    onclick: event =>{ event.preventDefault(); return qt.updateProductInQuotation({ID, parentID, quotation, update: true})},                
+                }
+            ],
+        });
+ 
+    // kiểm tra tồn tại của sản phẩm variations trong quotation
+    // lọc productID với productID trong  prices của danh sách products
+    qt.checkExistProductVariation = ({quotation, ID}) => 
+        quotation?.products && quotation?.products.find(product => product?.prices.find(price => price.productID == ID));        
+   
+    //chức năng cập nhật sản phẩm variation
+    qt.updateProductVariation = async ({productID, quotation}) => {
+        try {
+            let childProduct = await qt.getProduct({productID});
+            let prices = quotation.products.find(product => product.parentID == childProduct.product.parentID).prices;
+            let childIndex = prices.findIndex(price => price.productID == productID);
+            prices[childIndex] = childProduct.product.prices[0];
+            masterNotice.open( {
+                message:'Đã thêm sản phẩm vào báo giá',
+                icon: true,
+                style: 'info',
+                timer: 1500
+            })
+        } catch {
+
+        }
+        
+    }
+
+    qt.updateVAT = ({products}) => { 
+        let totalBeforeVAT = products.map(product => product.status == 'onprint'? product.prices[0].total:0)
+                                    .reduce((previousValue, currentValue )=>previousValue + currentValue,0); 
+        
+        let totalAfterVAT = [];   
+        totalAfterVAT = trantlateNumbertoVNString(totalAfterVAT, Math.round(1.1 * totalBeforeVAT), 0 );
+        if (totalAfterVAT.length != 0) totalAfterVAT[0] = totalAfterVAT[0].replace(',','');
+       
+        return [
+            {vatName: 'totalBeforeVAT',  vatValue: totalBeforeVAT, },
+            {vatName: 'vatPercentage', vatValue: Math.round(totalBeforeVAT * 0.1)},
+            {vatName: 'totalpaid', vatValue: Math.round(1.1 * totalBeforeVAT)},
+            {vatName: 'byWord', vatValue: `${totalAfterVAT.reverse().join(' ')} đồng`},
+        ]
+                       
+    }
+    
+    qt.updateVATFromTotal = ({quotation}) => {
+        quotation.vat.data = qt.updateVAT({products: quotation.products});
+        qt.pushVATToController({vat: quotation.vat });
+    }
+
+    //load vat khi thay đổi onprint/noprint
+    qt.pushVATToController = ({vat}) => {
+        if (! vat ) return;
+        vat.data.forEach(({vatName, vatValue}) => document.querySelector(`.${vatName}`).innerHTML = 
+            vatValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    }
+
+   return qt; 
+}
+const quotation = new Quotation().init({
+    id:'sheetQuotation',
+    templateName: 'templateone',
+    restAPI: QUOTATION_TEMPLATE_API,
+});
+window.onload = function() {
+    const accordion = new Accordion().init({ id: 'accordion', onlyAccordionOpen: true });
+  }

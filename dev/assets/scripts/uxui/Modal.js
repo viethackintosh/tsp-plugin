@@ -93,7 +93,8 @@ const Modal = function() {
                         modal.footer.classList.remove('hide');
 
     // đóng modal lại
-    md.close = () => {          
+    md.close = () => { 
+        
         let mdl = md.modal;
         if (mdl.main.clear && mdl.main.clear === true) mdl.body.innerHTML = '';   
         document.body.removeAttribute('style');

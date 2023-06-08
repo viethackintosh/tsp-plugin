@@ -14,6 +14,7 @@ const Delivery = function () {
 
   dl.updateDelivery = async ({ event }) => {
     // lấy thông tin từ server với ID là order
+    
     let ownData = event.target.ownData;
     try {
       let order = await dl.getOrder({ orderId: ownData.ID });
@@ -42,11 +43,10 @@ const Delivery = function () {
             });
 
           } else {
-            
-            masterModal.open({ options: 
+            masterModal.open({ config: 
               {
                 title: 'Cảnh báo',
-                clear: true,
+                footer: false,
                 content:  dl.existOrderInDelivery({ order, ID: ownData.ID }),   
 
               }
@@ -57,7 +57,7 @@ const Delivery = function () {
           //              cập nhật thêm order vào
         } else {          
           
-          masterModal.open({ options: {
+          masterModal.open({ config: {
               title: 'Cảnh báo',
               clear: true,
               content: dl.notSameCustomer({ order, ID: ownData.ID }),
@@ -110,7 +110,7 @@ const Delivery = function () {
     dl.data.user = order.user;
     dl.data.products = order.products;
     localStorage.setItem(dl.storageName, JSON.stringify(dl.data));
-    masterModal.close({ clear: true });
+    masterModal.close();
     masterNotice.open({
       message: `Đã cập nhật lại phiếu giao hàng với khách hàng & đơn hàng mới`,
       icon: true,
@@ -124,7 +124,7 @@ const Delivery = function () {
     let exist = dl.data.products.filter(product => product.orderId != ID);
     dl.data.products = [...exist, ...order.products];
     localStorage.setItem(dl.storageName, JSON.stringify(dl.data));
-    masterModal.close({ clear: true });
+    masterModal.close();
     masterNotice.open({
       message: `Đã cập nhật lại đơn hàng #${ID} vào phiếu giao hàng`,
       icon: true,
