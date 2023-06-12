@@ -51,6 +51,7 @@ const Quotation = function() {
     qt.updateQuotationProduct = ({ID,  parentID,  quotation}) => {
         // ID lúc này là của sản phẩm
         // parentID != 0 => kiểm 
+        //console.log(ID,  parentID) // parent == có thể là single 
         let exist = parentID !== 0?  
             qt.checkExistProductVariation({quotation, ID, })
             :qt.checkExistProductVariable({
@@ -76,7 +77,7 @@ const Quotation = function() {
     qt.updateProductInQuotation = async ({ID, parentID, quotation, update}) => {
         // tính toán cộng, vat, thành tiền, số tiền bằng chữ
         try {             
-            let product = await qt.getProduct({ID});
+            let product = await qt.getProduct({ID});            
             let findID = parentID !== 0? parentID: ID;
             let existProduct = quotation.products? quotation.products.find(pro => pro.parentID == findID): undefined; 
             if ( ! update) { // thêm sản phẩm mới

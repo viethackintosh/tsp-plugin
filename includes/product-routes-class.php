@@ -30,25 +30,27 @@ if (! class_exists('ProductRoutes')) {
         /** các function lấy dữ liệu thông qua id  */
         // lấy dữ liệu về product thông qua id
         public function getProductById($data) {
-            $proID = (int)$data->get_param('id');
+            $proID = (int)$data->get_param('id');  
+            $product = wc_get_product((int)$proID);          
             $inproduct = $this->getProductInfomation($proID);           
-            return ['product'=> $inproduct];
+            return ['product'=> $inproduct ];
         }
-
+        
         // lấy da
         public function getProductInfomation($proID) {
-            $product = wc_get_product($proID);
+            
+            $product = wc_get_product((int)$proID);
             $pro = [];  
             $pro['parentID'] = $this->getParentID($product);
             $pro['productName'] = $this->getProductName($product);
             $pro['unit'] = $this->getUnitProduct($product);
             $pro['attributes'] = $this->getAttributes($product);
-            $pro['prices'] =$this->getQuantityAndPrices($product);
+            $pro['prices'] = $this->getQuantityAndPrices($product);
             return $pro ;
         }
 
         // lấy id sản phẩm cha để so sánh thêm vào thông tin
-        public static function getParentID($product) {           
+        public static function getParentID($product) {    
             return $product->is_type('variation')? $product->get_parent_id():$product->get_id();
         }
 
@@ -107,11 +109,11 @@ if (! class_exists('ProductRoutes')) {
             // simple, variation, varible
             $fn = 'getQuantityAndPricesFor'. $prefix;
 
-            return $this->$fn($product);
+            return self::$fn($product);
         }
 
         //lấy số lượng và đơn giá của sản phẩm simple
-        public function getQuantityAndPricesForSimple($product) {
+        public static function getQuantityAndPricesForSimple($product) {
             // trả về array giá 
             return [['productID' => $product->get_id(),
                     'quantity'=>1, 
@@ -119,7 +121,7 @@ if (! class_exists('ProductRoutes')) {
         }
 
         // lấy giá và số lượng cho sản phẩm cóbiến thể 
-        public function getQuantityAndPricesForVariable($product) {
+        public static function getQuantityAndPricesForVariable($product) {
             $prices = [];	
             if ($product->has_child()) {	
                 $childs = $product->get_children();			
@@ -135,7 +137,7 @@ if (! class_exists('ProductRoutes')) {
         }
 
         //lấy giá và số lượng của sản phẩm biến thể con
-        public function getQuantityAndPricesForvariation($product) {
+        public static function getQuantityAndPricesForvariation($product) {
             // trả về array giá thống nhất với trường hợp sản phẩm variable
             return [[ 'productID' => $product->get_id(),
                     'quantity'=> (int)str_replace(',','',$product->get_attribute('pa_so-luong')), 

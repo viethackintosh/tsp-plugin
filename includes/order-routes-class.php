@@ -16,7 +16,7 @@ if (! class_exists('OrderRoutes')) {
 
         // đăng ký route cho product
         public function orderRoutesRegister() {
-            $namespace = 'tinsinhphuc';
+            $namespace = 'tinsinhphuc'; 
             register_rest_route($namespace, '/orders', ['methods' => 'GET', 'callback' => [$this,'orderRoutesProcess']]);
             register_rest_route($namespace, '/orders/(?P<orderId>\d+)', ['methods' => 'GET', 'callback' => [$this,'getOrderByIdRoute']]);
         } //
