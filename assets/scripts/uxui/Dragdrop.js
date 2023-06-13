@@ -1,4 +1,6 @@
-import{buildTag as e}from"../helpers/buildtag.js";let DRAP_DROPPER=`<div class="drag__wrapper">        
+import { buildTag } from "../helpers/buildtag.js";
+const DRAP_DROPPER = 
+    `<div class="drag__wrapper">        
         <label class="drag__label drag__area label">
             <span class="label__title title">Click here select files</span>
             <input type=file class="drag__file file">
@@ -7,4 +9,143 @@ import{buildTag as e}from"../helpers/buildtag.js";let DRAP_DROPPER=`<div class="
             <div class="drag__result result">
             </div>
     </div>
-`,DragDrop=function(){let t=this;t.drag,t.init=({id:e,config:r})=>{let a=document.querySelector(`#${e}`);return a=a?t.collectDrapdrop({drag:a,config:r}):t.createNewDrapdrop({id:e,config:r}),t.drag=a,t},t.createNewDrapdrop=({id:r,config:a})=>{let l=e({tag:"div",className:"drag parent",id:r,innerHTML:DRAP_DROPPER});return t.collectDrapdrop({drag:l,config:a})},t.collectDrapdrop=({drag:e,config:r})=>{let a={main:e,dragArea:e.querySelector(".drag__area"),title:e.querySelector(".title"),input:e.querySelector("input[type=file]"),result:e.querySelector(".result")};return Object.entries(r).map(([e,r])=>t[e]({paramater:r,dragger:a})),a.input.onchange=e=>t.fileOnChange({event:e,dragger:a}),["dragover","drop","dragleave"].map(e=>{a.dragArea.addEventListener(e,t.preventDefault,!1)}),["dragenter","dragover"].map(e=>{a.dragArea.addEventListener(e,e=>t.highlight({dragger:a}),!1)}),["drop","dragleave"].map(e=>{a.dragArea.addEventListener(e,e=>t.unHighlight({dragger:a}),!1)}),a.dragArea.addEventListener("drop",e=>t.drop({event:e,dragger:a}),!1),a},t.message=({paramater:e,dragger:t})=>t.message.innerHTML=e,t.label=({paramater:e,dragger:t})=>t.title.innerText=e,t.multiple=({paramater:e,dragger:t})=>t.input.multiple=e,t.accept=({paramater:e,dragger:t})=>t.input.accept=e,t.dataType=({paramater:e,dragger:t})=>t.dragArea.dataType=e,t.preventDefault=e=>{e.preventDefault(),e.stopPropagation()},t.highlight=({dragger:e})=>e.dragArea.classList.add("active"),t.unHighlight=({dragger:e})=>e.dragArea.classList.remove("active"),t.drop=({event:e,dragger:r})=>{let a=e.dataTransfer;t[`get${r.dragArea.dataType}`]({tranfer:a,dragger:r})},t.fileOnChange=({event:e,dragger:r})=>{if(r.input.multiple){let a=t.mergeFiles({source:r.dragArea.files,target:r.input.files,acceptList:r.input.accept});r.input.files=a,r.dragArea.files=a}let l=`<ul>${Array.from(r.input.files).map(e=>`<li>${e.name}</li>`).join("")}</ul>`;r.result.innerHTML=l},t.getfile=({tranfer:e,dragger:r})=>{let a=new DataTransfer;if(!1===r.input.multiple){let l=Array.from(e.files).filter(e=>""!=e.type&&-1!==r.input.accept.indexOf(e.type));a.items.add(l[0]),r.input.files=a.files}else{let i=t.mergeFiles({source:e.files,target:r.input.files,acceptList:r.input.accept});r.input.files=i,r.dragArea.files=i}let n=`<ul>${Array.from(r.input.files).map(e=>`<li>${e.name}</li>`).join("")}</ul>`;r.result.innerHTML=n},t.mergeFiles=({source:e,target:t,acceptList:r})=>{let a=new DataTransfer,l=[...Array.from(e),...Array.from(t)];return 0!==(l=l.reduce((e,t)=>{let a=e.filter(e=>e.name==t.name),l=""!=t.type&&-1!==r.indexOf(t.type);return 0==a.length&&l?[...e,t]:e},[])).length&&l.forEach(e=>a.items.add(e)),a.files}};export{DragDrop};
+`;
+const DragDrop = function() {
+    let dad = this;
+    dad.drag;
+    dad.init = ({id, config}) => { 
+        let drag = document.querySelector(`#${id}`);
+        drag =  ! drag? dad.createNewDrapdrop({id, config}):dad.collectDrapdrop({drag, config});               
+        dad.drag = drag;
+        return dad;
+    }
+
+    dad.createNewDrapdrop = ({id, config}) => { 
+        let drag = buildTag({
+            tag: 'div',
+            className: 'drag parent' ,
+            id,
+            innerHTML: DRAP_DROPPER,
+        });
+        drag = dad.collectDrapdrop({drag, config});
+        return drag;
+    }
+
+    dad.collectDrapdrop = ({drag, config}) => {
+
+        let dragger = {
+            main: drag,
+            dragArea: drag.querySelector('.drag__area'),
+            title: drag.querySelector('.title'),
+            input: drag.querySelector('input[type=file]'),
+            result: drag.querySelector('.result'),
+        }
+        // thay đổi các thuộc tính 
+        Object.entries(config).map(([method, paramater]) => dad[method]({paramater, dragger}));        
+        dragger.input.onchange = event => dad.fileOnChange({event, dragger});
+
+        [ 'dragover', 'drop', 'dragleave'].map(eventName => {
+            dragger.dragArea.addEventListener(eventName, dad.preventDefault ,false)
+        });
+
+        ['dragenter', 'dragover'].map(eventName => {           
+            dragger.dragArea.addEventListener(eventName, (event)=> dad.highlight({dragger}), false);
+        });
+        ['drop', 'dragleave'].map(eventName => {           
+            dragger.dragArea.addEventListener(eventName, (event)=> dad.unHighlight({dragger}), false);
+        });
+        
+        dragger.dragArea.addEventListener('drop', (event) => dad.drop({event, dragger}), false);
+        return dragger;
+    }
+
+    // thay đổi nội dung thông báo trong khung drag
+    dad.message = ({paramater, dragger}) => dragger.message.innerHTML = paramater;
+    
+    // thay đổi nội dung hiển thị của nút bấm mở khung chọn file
+    dad.label = ({paramater, dragger}) => dragger.title.innerText = paramater;   
+    
+    // tắt mở chức năng chọn nhiều file
+    dad.multiple = ({paramater, dragger}) => dragger.input.multiple = paramater;
+    
+    // chấp nhận các thể loại file liệt kê
+    dad.accept = ({paramater, dragger}) => dragger.input.accept = paramater; 
+    
+    // đây là loại dữ liệu cần lấy
+    dad.dataType = ({paramater, dragger}) => dragger.dragArea.dataType = paramater;
+   
+    dad.preventDefault = (event) => {
+        event.preventDefault();
+        event.stopPropagation()
+    }
+
+    // 
+    dad.highlight = ({ dragger }) => dragger.dragArea.classList.add('active');    
+    
+
+    dad.unHighlight = ({ dragger }) =>  dragger.dragArea.classList.remove('active');     
+  
+    dad.drop = ({event, dragger}) => {  
+        // input multiple == false => lấy file đầu tiên trong file list gắn vào input file
+        // input multiple == true 
+        let dt = event.dataTransfer;  
+        let dataType = dragger.dragArea.dataType;        
+        dad[`get${dataType}`]({tranfer: dt, dragger});     
+    }
+
+    // khi input file thay đổi
+    dad.fileOnChange = ({ event, dragger }) => {
+       
+        if (dragger.input.multiple) {
+            let temp = dad.mergeFiles({source:dragger.dragArea.files, target: dragger.input.files, acceptList: dragger.input.accept});
+            dragger.input.files = temp;
+            dragger.dragArea.files = temp;
+        } 
+        
+        let result = `<ul>${Array.from(dragger.input.files).map(file => `<li>${file.name}</li>`).join('')}</ul>`;
+        dragger.result.innerHTML = result;
+    }
+
+    //lấy file từ drag area hiển thị sang result
+    dad.getfile = ({ tranfer, dragger }) => {
+        let tempTranfer = new DataTransfer();
+        if (dragger.input.multiple === false) {
+            // tìm file đầu tiên thoả mãn accept
+            let files = Array.from(tranfer.files).filter(file => 
+                file.type != '' && dragger.input.accept.indexOf(file.type) !== -1 
+            );
+            if (files.length != 0) {
+
+                tempTranfer.items.add(files[0]);
+                dragger.input.files = tempTranfer.files;
+            }
+            
+        } else {
+            let temp = dad.mergeFiles({source:tranfer.files, target: dragger.input.files, acceptList: dragger.input.accept});       
+            dragger.input.files = temp;    
+            dragger.dragArea.files = temp;
+        }
+          
+        let result = `<ul>${Array.from(dragger.input.files).map(file => `<li>${file.name}</li>`).join('')}</ul>`;
+        dragger.result.innerHTML = result;
+    }
+
+    // 
+    dad.mergeFiles = ({ source, target, acceptList }) => {
+        let tempTranfer = new DataTransfer();
+        let files = [...Array.from(source),...Array.from(target)]
+           
+        files = files.reduce((list, item) => {                
+            let ft = list.filter(ls => ls.name == item.name); // có trùng lắp
+            let accept = item.type != '' && acceptList.indexOf(item.type) !== -1; // phù hợp loại file
+            return ft.length != 0 || ! accept ? list: [...list, item]}, []); 
+            
+        if (files.length !== 0) {
+            files.forEach(file => tempTranfer.items.add(file));
+        }
+        return tempTranfer.files;        
+    }
+}
+ 
+export {  DragDrop };
+ 

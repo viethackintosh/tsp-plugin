@@ -114,8 +114,11 @@ const DragDrop = function() {
             let files = Array.from(tranfer.files).filter(file => 
                 file.type != '' && dragger.input.accept.indexOf(file.type) !== -1 
             );
-            tempTranfer.items.add(files[0]);
-            dragger.input.files = tempTranfer.files;
+            if (files.length != 0) {
+
+                tempTranfer.items.add(files[0]);
+                dragger.input.files = tempTranfer.files;
+            }
             
         } else {
             let temp = dad.mergeFiles({source:tranfer.files, target: dragger.input.files, acceptList: dragger.input.accept});       
