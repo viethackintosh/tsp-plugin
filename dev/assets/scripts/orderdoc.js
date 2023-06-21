@@ -107,11 +107,12 @@ const DDocument = function() {
       dd.dragAndDropUploadForm = () => {  
             const drapDrop = new DragDrop().init({
                   id: 'uploader',
-                  config: {                     
-                      label: 'Ấn hoặc kéo thả file vào đây',
-                      dataType : 'file',       
-                      multiple: false,
-                      accept: 'application/pdf',
+                  config: {   
+                        message: 'Kéo và thả files vào đây!',     
+                        title: 'Chọn file',                                                
+                        dataType : 'file',       
+                        multiple: false,
+                        accept: '.pdf',
                   }
             });
             return drapDrop;
@@ -142,35 +143,34 @@ const DDocument = function() {
             })
       
       dd.uploadFileToServer = async ({event} ) => { 
-
-            let file = dd.form.drag.input.files[0];   
             let target = event.target.target; // 
-          
+            let files = dd.form.drag.files;
             let body = new FormData();
-            body.append('files', file);
+            // lệnh bên dưới dùng upload cho nhiều file
+            //dd.form.drag.files.map(file => body.append('files[]', file ));
+            body.append('files', files[0] )
             body.append('owner', JSON.stringify(target.owner));
-            if (file) { 
+            if (files.length !== 0) { 
                   
                   try {
                         let resData = await fchRequest({
+                           
                               ftchURI: '/wp-json/tinsinhphuc/document/upload',
                               data: {
                                     method: 'POST',
+                                    headers: {  },
                                     body,
-                                    headers: {}
                               }
                         });
                         if (resData.result ) { 
-                              // thay thế                               
-                              target.owner.file = file.name;
+                              // thay thế              
+                              target.owner.file = files[0].name;
                               let uploadDocument = target.querySelector('.upload--document');
-                              uploadDocument.innerHTML = file.name;
+                              uploadDocument.innerHTML = files[0].name;
                               uploadDocument.classList.remove('upload--document');
                               uploadDocument.classList.add('preview--document');
                               uploadDocument.onclick = event =>dd.previewDocument({event});
-                              target.append(dd.removeButton());
-                              dd.form.drag.input.value = null;
-                              dd.form.drag.result.innerHTML ='';                                                          
+                              target.append(dd.removeButton());                                                                                     
                               
                               masterModal.close();
                               masterNotice.open( {

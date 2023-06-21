@@ -79,7 +79,7 @@ if (! class_exists('Orderdoc')) {
                   }
                   return $default;
             }
-
+ 
             public function createDocumentLink($linkData, $key, $ID) { 
                   $file = $linkData['file'];
                   $data = ['ID' => $ID, 'name' => $key, 'file'=>$file, 'title'=>$linkData['title']];
@@ -93,13 +93,11 @@ if (! class_exists('Orderdoc')) {
             }
 
             public function documentUpload(WP_REST_Request $req) {
-                  $file = $_FILES['files']? $_FILES['files']: false;                  
-                  if ($file === false) return ['code'=> 401, 'message' => 'file not found'];
-                 
+                  $files = $_FILES['files'];
+                  
                   $owner = $_POST['owner'];
                   $owner = json_decode( str_replace('\\','', $owner));
-                  
-                  $saveFile = move_uploaded_file($file['tmp_name'],$this->uploaddir . $file['name']);
+                  $saveFile = move_uploaded_file($files['tmp_name'],$this->uploaddir . $files['name']);
              
                   if ($saveFile == true) {
 
@@ -107,17 +105,17 @@ if (! class_exists('Orderdoc')) {
                         $exist = metadata_exists('post',$owner->ID, 'orders');
       
                         $exitDocument = $exist ? get_post_meta($owner->ID,'orders',true): [];                   
-                        $exitDocument[ $owner->name] = $file['name'];
+                        $exitDocument[ $owner->name] = $files['name'];
       
                         $updateResult = $exist? update_post_meta($owner->ID, 'orders',  $exitDocument):
                                           add_post_meta($owner->ID, 'orders', $exitDocument);
       
                         $message = $updateResult? 'Đã tải lên & lưu dữ liệu': 'Xảy ra lỗi! vui lòng xem lại';
-                        return ['code' => 200, 'result'=> $owner, 'message' => $message];
+                        return ['code' => 200, 'result'=> $files, 'message' => 'Đã upload thành công'.$files['name'] ];
                         
-                  } 
-
-                  return ['code' => 504, 'result'=> $owner, 'message' => 'Không thể lưu dữ liệu'];
+                  }
+                  
+                  return ['code' => 504, 'result'=>$files, 'message' => 'Không thể lưu dữ liệu'];
             }
             
             public function documentRemove(WP_REST_Request $req) {

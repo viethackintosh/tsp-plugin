@@ -4,7 +4,7 @@ const fectchDefault = {
     credentials: 'same-origin', 
     headers: {
         'Content-Type': 'application/json'
-    // 'Content-Type': 'application/x-www-form-urlencoded',
+        // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: 'follow', 
     referrerPolicy: 'no-referrer',
