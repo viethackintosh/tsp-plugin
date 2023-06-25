@@ -42,8 +42,8 @@ const Quotation = function() {
     // sự kiện thêm 1 nguồn dữ liệu vào báo giá xảy ra
     qt.updateQuotation = event => {
         event.preventDefault();
-        let ownData = event.target.ownData;
-        let { type, ...other } = ownData;        
+        const target = event.target.closest('a');        
+        let { type, ...other } = target.ownData;        
         return qt[`updateQuotation${type}`]({...other, quotation: qt.data});
     }
 

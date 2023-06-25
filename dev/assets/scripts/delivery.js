@@ -1,7 +1,6 @@
 import { Master, masterNotice, masterModal  } from './master.js';
 import { createFormItem } from './helpers/formgroup.js';
 import { Accordion } from './uxui/accordion.js';
-
 import { DELIVERY_TEMPLATE_API } from './helpers/const.js';
 
 const Delivery = function () {
@@ -14,15 +13,15 @@ const Delivery = function () {
 
   dl.updateDelivery = async ({ event }) => {
     // lấy thông tin từ server với ID là order
-    
-    let ownData = event.target.ownData;
+    const target = event.target.closest('a');
+    let { ID } = target.ownData;
     try {
-      let order = await dl.getOrder({ orderId: ownData.ID });
-      order.products.map(product => product.orderId = ownData.ID);
+      let order = await dl.getOrder({ orderId: ID });
+      order.products.map(product => product.orderId = ID);
       if (!dl.data.user) {
         dl.data = { ...dl.data, user: order.user, products: order.products }
         masterNotice.open({
-          message: `Đã thêm đơn hàng #${ownData.ID} vào phiếu giao hàng`,
+          message: `Đã thêm đơn hàng #${ID} vào phiếu giao hàng`,
           icon: true,
           style: 'info',
           timer: 1500
@@ -32,11 +31,11 @@ const Delivery = function () {
 
         if (dl.data.user.nickname == order.user.nickname) {
           // kiểm tra có phải là ID order cũ không?
-          let existOrder = dl.data.products.find(product => product.orderId == ownData.ID);
+          let existOrder = dl.data.products.find(product => product.orderId == ID);
           if (!existOrder) {
             dl.data.products = [...dl.data.products, ...order.products];
             masterNotice.open({
-              message: `Đã thêm đơn hàng #${ownData.ID} vào phiếu giao hàng`,
+              message: `Đã thêm đơn hàng #${ID} vào phiếu giao hàng`,
               icon: true,
               style: 'info',
               timer: 1500
@@ -47,7 +46,7 @@ const Delivery = function () {
               {
                 title: 'Cảnh báo',
                 footer: false,
-                content:  dl.existOrderInDelivery({ order, ID: ownData.ID }),   
+                content:  dl.existOrderInDelivery({ order, ID }),   
 
               }
             });
@@ -60,7 +59,7 @@ const Delivery = function () {
           masterModal.open({ config: {
               title: 'Cảnh báo',
               clear: true,
-              content: dl.notSameCustomer({ order, ID: ownData.ID }),
+              content: dl.notSameCustomer({ order, ID }),
             }
           });
         }
