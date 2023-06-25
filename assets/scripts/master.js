@@ -1,5 +1,5 @@
-import { Notice } from './uxui/Notice.js';
-import { Modal } from './uxui/Modal.js';
+import { Notice } from './uxui/notice.js';
+import { Modal } from './uxui/modal.js';
 import { fchRequest } from './helpers/fetch.js';
 import { createFormItem } from './helpers/formgroup.js';
 

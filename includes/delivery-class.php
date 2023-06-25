@@ -61,7 +61,7 @@ if (! class_exists('Delivery')) {
         //Thêm link add to delivery
         public function addOrderLink($link, $post) {                  
             $data = ['ID'=>$post->ID];
-            $addtodelivery = '<a href=# class="updateDelivery" data='.json_encode($data).'>Lập phiếu giao hàng</a>';
+            $addtodelivery = '<a href=# class="updateDelivery" data='.json_encode($data).'><p class="title">Lập phiếu giao hàng</p></a>';
             return $link . ' | ' .$addtodelivery;
         }
        

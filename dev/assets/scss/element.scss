@@ -117,3 +117,18 @@
           }
      }
 }
+#dragorder {
+     .drop-zone {
+          &__wrapper {
+               
+               position: relative;              
+               min-width: auto;
+               display: block;
+               text-align: left;
+               margin-bottom: 15px;
+               top:0;
+               left: 0;
+               transform: none;
+          }
+     }
+}

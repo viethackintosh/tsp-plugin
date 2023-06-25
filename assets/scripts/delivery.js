@@ -1,1 +1,161 @@
-import{Master as e,masterNotice as t,masterModal as n}from"./master.js";import{createFormItem as r}from"./helpers/formgroup.js";import{Accordion as a}from"./uxui/Accordion.js";import{DELIVERY_TEMPLATE_API as i}from"./helpers/const.js";let Delivery=function(){let a=new e;return a.storageName="phieugiaohang",a.init,a.title="Phiếu giao h\xe0ng",a.updateDelivery=async({event:e})=>{let r=e.target.ownData;try{let i=await a.getOrder({orderId:r.ID});(i.products.map(e=>e.orderId=r.ID),a.data.user)?a.data.user.nickname==i.user.nickname?a.data.products.find(e=>e.orderId==r.ID)?n.open({config:{title:"Cảnh b\xe1o",footer:!1,content:a.existOrderInDelivery({order:i,ID:r.ID})}}):(a.data.products=[...a.data.products,...i.products],t.open({message:`Đ\xe3 th\xeam đơn h\xe0ng #${r.ID} v\xe0o phiếu giao h\xe0ng`,icon:!0,style:"info",timer:1500})):n.open({config:{title:"Cảnh b\xe1o",clear:!0,content:a.notSameCustomer({order:i,ID:r.ID})}}):(a.data={...a.data,user:i.user,products:i.products},t.open({message:`Đ\xe3 th\xeam đơn h\xe0ng #${r.ID} v\xe0o phiếu giao h\xe0ng`,icon:!0,style:"info",timer:1500}))}catch{}finally{localStorage.setItem(a.storageName,JSON.stringify(a.data))}},a.notSameCustomer=({order:e,ID:t})=>r({tag:"p",className:"Message",innerHTML:"Kh\xe1ch h\xe0ng thuộc đơn h\xe0ng bạn muốn th\xeam v\xe0o kh\xf4ng tr\xf9ng với kh\xe1ch h\xe0ng hiện tại. Bạn muốn &nbsp;",children:[{tag:"a",href:"#",innerHTML:"thay đổi",onclick:n=>a.changeAllDelivery({event:n,order:e,ID:t})}]}),a.existOrderInDelivery=({order:e,ID:t})=>r({tag:"p",className:"Message",innerHTML:"Đ\xe3 tồn đơn h\xe0ng n\xe0y trong phiếu giao h\xe0ng. Bạn muốn &nbsp;",children:[{tag:"a",href:"#",innerHTML:"Cập nhật lại",onclick:n=>a.updateAgainOrder({event:n,order:e,ID:t})}]}),a.changeAllDelivery=({event:e,order:r,ID:i})=>{a.data.user=r.user,a.data.products=r.products,localStorage.setItem(a.storageName,JSON.stringify(a.data)),n.close(),t.open({message:`Đ\xe3 cập nhật lại phiếu giao h\xe0ng với kh\xe1ch h\xe0ng & đơn h\xe0ng mới`,icon:!0,style:"info",timer:1500})},a.updateAgainOrder=({event:e,order:r,ID:i})=>{let o=a.data.products.filter(e=>e.orderId!=i);a.data.products=[...o,...r.products],localStorage.setItem(a.storageName,JSON.stringify(a.data)),n.close(),t.open({message:`Đ\xe3 cập nhật lại đơn h\xe0ng #${i} v\xe0o phiếu giao h\xe0ng`,icon:!0,style:"info",timer:1500})},a.createAttribute=()=>[],a.updateTotal=()=>{},a.otherPage=()=>{document.querySelectorAll(".updateDelivery").forEach(e=>{let t=JSON.parse(e.getAttribute("data"));Object.assign(e,{ownData:t,onclick:e=>a.updateDelivery({event:e})})})},a},delivery=new Delivery().init({id:"delivery",templateName:"delivery",restAPI:i});window.onload=function(){new a().init({id:"accordion",onlyAccordionOpen:!0})};
+import { Master, masterNotice, masterModal  } from './master.js';
+import { createFormItem } from './helpers/formgroup.js';
+import { Accordion } from './uxui/accordion.js';
+
+import { DELIVERY_TEMPLATE_API } from './helpers/const.js';
+
+const Delivery = function () {
+  let dl = new Master();
+  dl.storageName = 'phieugiaohang';
+
+  let init = dl.init;
+  dl.title = 'Phiếu giao hàng';
+  // tạo lại phần khởi tạo đặt thù của quotation
+
+  dl.updateDelivery = async ({ event }) => {
+    // lấy thông tin từ server với ID là order
+    
+    let ownData = event.target.ownData;
+    try {
+      let order = await dl.getOrder({ orderId: ownData.ID });
+      order.products.map(product => product.orderId = ownData.ID);
+      if (!dl.data.user) {
+        dl.data = { ...dl.data, user: order.user, products: order.products }
+        masterNotice.open({
+          message: `Đã thêm đơn hàng #${ownData.ID} vào phiếu giao hàng`,
+          icon: true,
+          style: 'info',
+          timer: 1500
+        });
+      } 
+      else {
+
+        if (dl.data.user.nickname == order.user.nickname) {
+          // kiểm tra có phải là ID order cũ không?
+          let existOrder = dl.data.products.find(product => product.orderId == ownData.ID);
+          if (!existOrder) {
+            dl.data.products = [...dl.data.products, ...order.products];
+            masterNotice.open({
+              message: `Đã thêm đơn hàng #${ownData.ID} vào phiếu giao hàng`,
+              icon: true,
+              style: 'info',
+              timer: 1500
+            });
+
+          } else {
+            masterModal.open({ config: 
+              {
+                title: 'Cảnh báo',
+                footer: false,
+                content:  dl.existOrderInDelivery({ order, ID: ownData.ID }),   
+
+              }
+            });
+          }
+
+          // existOrder? thông báo đã có đơn hàng này trong báo giá, bạn có muốn cập nhật lại không :
+          //              cập nhật thêm order vào
+        } else {          
+          
+          masterModal.open({ config: {
+              title: 'Cảnh báo',
+              clear: true,
+              content: dl.notSameCustomer({ order, ID: ownData.ID }),
+            }
+          });
+        }
+      }
+      // kiểm tra user trong delivery bằng cách kiểm tra nickname
+      // nếu cùng nick name -> thêm product vào 
+    } catch {
+
+    } finally {
+
+      localStorage.setItem(dl.storageName, JSON.stringify(dl.data));
+    }
+  }
+
+  dl.notSameCustomer = ({ order, ID }) =>
+    createFormItem({
+      tag: 'p',
+      className: 'Message',
+      innerHTML: 'Khách hàng thuộc đơn hàng bạn muốn thêm vào không trùng với khách hàng hiện tại. Bạn muốn &nbsp;',
+      children: [
+        {
+          tag: 'a',
+          href: '#',
+          innerHTML: 'thay đổi',
+          onclick: event => dl.changeAllDelivery({ event, order, ID }),
+        }
+      ],
+    })
+
+  dl.existOrderInDelivery = ({ order, ID }) =>
+    createFormItem({
+      tag: 'p',
+      className: 'Message',
+      innerHTML: 'Đã tồn đơn hàng này trong phiếu giao hàng. Bạn muốn &nbsp;',
+      children: [
+        {
+          tag: 'a',
+          href: '#',
+          innerHTML: 'Cập nhật lại',
+          onclick: event => dl.updateAgainOrder({ event, order, ID }),
+        }
+      ],
+    })
+
+  dl.changeAllDelivery = ({ event, order, ID }) => {
+    // thay đổi toàn bộ dữ liệu  của phiếu giao hàng khi có sự khác nhau của khách hàng
+    dl.data.user = order.user;
+    dl.data.products = order.products;
+    localStorage.setItem(dl.storageName, JSON.stringify(dl.data));
+    masterModal.close();
+    masterNotice.open({
+      message: `Đã cập nhật lại phiếu giao hàng với khách hàng & đơn hàng mới`,
+      icon: true,
+      style: 'info',
+      timer: 1500
+    });
+  }
+
+  dl.updateAgainOrder = ({ event, order, ID }) => {
+    // cập nhật lại đơn hàng khi ID 2 đơn hàng trùng nhau
+    let exist = dl.data.products.filter(product => product.orderId != ID);
+    dl.data.products = [...exist, ...order.products];
+    localStorage.setItem(dl.storageName, JSON.stringify(dl.data));
+    masterModal.close();
+    masterNotice.open({
+      message: `Đã cập nhật lại đơn hàng #${ID} vào phiếu giao hàng`,
+      icon: true,
+      style: 'info',
+      timer: 1500
+    });
+  }  
+
+  dl.createAttribute = () => [];
+  dl.updateTotal = () => {};
+
+  dl.otherPage = () => {
+    let updateLinks = document.querySelectorAll('.updateDelivery');
+    updateLinks.forEach(link => {
+      let ownData = JSON.parse(link.getAttribute('data'));
+      Object.assign(link, {
+        ownData,
+        onclick: event => dl.updateDelivery({ event }),
+      })
+
+    });
+  }
+
+  return dl;
+}
+
+const delivery = new Delivery().init({
+  id: 'delivery',
+  templateName: 'delivery',
+  restAPI: DELIVERY_TEMPLATE_API,
+}); 
+window.onload = function() {
+  const accordion = new Accordion().init({ id: 'accordion', onlyAccordionOpen: true });
+}

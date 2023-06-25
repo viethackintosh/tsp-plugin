@@ -62,7 +62,7 @@ if (! file_exists($targetDir)) mkdir($targetDir,0755, true);
 if (strpos(COMPLIER, $ext) !== false) {     
       if ($ext == 'scss') {
             $lastUpdateFile = str_replace($fileInfo['filename'],'app', $lastUpdateFile);
-            $link = $targetDir.'/app.min.css';           
+            $link = $targetDir.'/app.css';           
             $sassRs = shell_exec('sass '.$lastUpdateFile .' ' . $link .' --style compressed'); 
       } else {
             $link = $targetDir.'/'.$fileInfo['filename'].'.'.$ext;

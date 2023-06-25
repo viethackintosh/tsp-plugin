@@ -89,7 +89,7 @@ if (! class_exists('Quotation')) {
         public function addUserToQuotation($actions,$user) {
             if ($user->roles[0] == 'customer') {
                 $datajs = ['ID'=>$user->ID,  'type'=> 'User'];
-                $addtopplink = '<a href=# class="updateQuotation" data='.json_encode($datajs). '>Lập báo giá</a>';
+                $addtopplink = '<a href=# class="updateQuotation" data='.json_encode($datajs). '><p class="title">Lập báo giá</p></a>';
                 $actions= array_merge($actions,array('addtopp'=>$addtopplink ));
             }
             return $actions; 
@@ -143,13 +143,13 @@ if (! class_exists('Quotation')) {
         public function addtoQuotationButtonVariation($loop, $variation_data, $variation) {  
            
             $datajs = array('ID'=>$variation->ID, 'type'=> 'Product', 'parentID' => $variation->post_parent);            
-            echo $addtopplink = '<a href=# class="updateQuotation button" data='.json_encode($datajs).' >Lập báo giá</a>';                
+            echo $addtopplink = '<a href=# class="updateQuotation button" data='.json_encode($datajs).' ><p class="title">Lập báo giá</p></a>';                
         }	
            
         //Thêm link add to delivery
         public function addOrderLink($link, $post) {
             $data = ['ID'=>$post->ID, 'type' => 'Order'];
-            $quotationLink = '<a href=# class="updateQuotation" data='.json_encode($data).'>Lập báo giá</a>';				
+            $quotationLink = '<a href=# class="updateQuotation" data='.json_encode($data).'><p class="title">Lập báo giá</p></a>';				
             return $quotationLink ;
         }
 

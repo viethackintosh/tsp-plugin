@@ -86,36 +86,37 @@ if (! class_exists('Orderdoc')) {
 
                   $title = $file == ''?$linkData['title']:$file;
                   
-                  $delete = $file == ''? '': '<span class="dashicons dashicons-no-alt delete__button"></span>&nbsp;';
+                  $delete = $file == ''? '': '<span class="delete__button">x</span>&nbsp;';
                   $titleClass = $file == ''? 'upload--document': 'preview--document';
-                  $defautLink = '<a class="order--document" data=\''.json_encode($data).'\' ><span class="title '.$titleClass.'">'. $title.'</span> '. $delete.'</a> | ' ;                  
+                  $defautLink = '<a href=# class="order--document" data=\''.json_encode($data).'\' ><p class="title '.$titleClass.'">'. $title. $delete.'</p></a> | ' ;                  
                   return $defautLink;
             }
 
             public function documentUpload(WP_REST_Request $req) {
                   $files = $_FILES['files'];
-                  
-                  $owner = $_POST['owner'];
-                  $owner = json_decode( str_replace('\\','', $owner));
+                  $docName = $_POST['docname'];
+                  $orders = $_POST['orders'];
+                  $orders = json_decode( str_replace('\\','', $orders));
                   $saveFile = move_uploaded_file($files['tmp_name'],$this->uploaddir . $files['name']);
              
                   if ($saveFile == true) {
 
+                        foreach ($orders as $ID) {
+
+                              $exist = metadata_exists('post',$ID, 'orders');
+            
+                              $exitDocument = $exist ? get_post_meta($ID,'orders',true): [];                   
+                              $exitDocument[ $docName] = $files['name'];
+            
+                              $updateResult = $exist? update_post_meta($ID, 'orders',  $exitDocument):                                         add_post_meta($owner->ID, 'orders', $exitDocument);
+                        }
                         // lưu dữ liệu liên quan vào database
-                        $exist = metadata_exists('post',$owner->ID, 'orders');
-      
-                        $exitDocument = $exist ? get_post_meta($owner->ID,'orders',true): [];                   
-                        $exitDocument[ $owner->name] = $files['name'];
-      
-                        $updateResult = $exist? update_post_meta($owner->ID, 'orders',  $exitDocument):
-                                          add_post_meta($owner->ID, 'orders', $exitDocument);
-      
-                        $message = $updateResult? 'Đã tải lên & lưu dữ liệu': 'Xảy ra lỗi! vui lòng xem lại';
-                        return ['code' => 200, 'result'=> $files, 'message' => 'Đã upload thành công'.$files['name'] ];
+                           
+                        return ['code' => 'success' ];
                         
                   }
                   
-                  return ['code' => 504, 'result'=>$files, 'message' => 'Không thể lưu dữ liệu'];
+                  return ['code' => 'error'];
             }
             
             public function documentRemove(WP_REST_Request $req) {

@@ -3,7 +3,7 @@
  * @param {*} htmlTag: object 
  * @returns html element 
  */
-import { buildTag } from './buildtag.js';
+import { buildTag } from './buildTag.js';
 
 const createFormItem = ({tag, innerHTML, children,  ...attributes}) => {
     let listChilren = children? children.map(child => isNodeDOM(child) ? child: buildTag(child)):[];

@@ -1,1 +1,61 @@
-import{buildTag as t}from"./buildtag.js";let Editor=function(){let e=this;e.init=({template:r,className:n,config:o})=>{if(!r)return;let i=t({tag:"div",innerHTML:r}),a=Array.from(i.querySelectorAll(`.${n}`)||[]).map(t=>{let r=t.id||e.getUpdate(6);return Object.assign(t,{id:r,contentEditable:!0,...o?.processEvent}),{id:r,content:t.textContent,changed:!1}});return{template:i.innerHTML,templateDOM:i,elements:a}},e.getUpdate=t=>{let e="",r="abcdefghijklmnopqrstuvwxyz",n=r.length;for(var o=0;o<t;o++)e+=r.charAt(Math.floor(Math.random()*n));return e},e.randomId=()=>{}};export{Editor};
+import {  buildTag } from './buildTag.js';
+
+const Editor = function() {
+    let e = this;
+    /* config: {
+      enterToUpdate: true/false,
+      focusoutToUpdate: true/false,
+      onfocusin: xử lý nội dung trước khi thay đổi
+      update: () => {} // hàm callback update theo yêu cầu
+      getUpdate = () => { } // trả về nội dung của khu vực edit 
+    }*/
+    e.init = ({template, className, config} ) => {
+      // trả về mảng dữ liệu thu thập theo  
+      if (! template ) return; 
+      // tạo 1 dom object 
+      let templateDOM = buildTag({
+        tag: 'div',
+        innerHTML: template,
+      });
+  
+      // lấy các phần tử trong templateDOM bằng className
+      let elementsObject = templateDOM.querySelectorAll(`.${className}`) || [];
+      let elements = Array.from(elementsObject).map(element => {
+        let id = element.id || e.getUpdate(6);     
+        Object.assign(element, {
+          id,
+          contentEditable: true,
+          ...config?.processEvent,
+        });
+        return {
+          id,
+          content: element.textContent,
+          changed: false,
+        }
+      });
+      return {
+        template: templateDOM.innerHTML, //dùng lưu vào local storage 
+        templateDOM, // dùng trực tiếp hiển thị        
+        elements // mảng các phần tử đã được thêm id bao gồm { id, content}
+      };
+     
+    }
+    e.getUpdate = length => {
+      // trả về dữ liệu được nhập
+      let randomString = '';
+      let characters = 'abcdefghijklmnopqrstuvwxyz';
+      let chrLength = characters.length;
+      for ( var i = 0; i < length; i++ ) {
+        randomString += characters.charAt(Math.floor(Math.random() * chrLength));
+      }
+      return randomString;
+    }   
+
+    //tạo random id
+    e.randomId = () => {
+
+    }
+
+}
+
+export { Editor };

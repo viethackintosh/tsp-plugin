@@ -1,1 +1,22 @@
-import{buildTag as e}from"./buildtag.js";let createFormItem=({tag:t,innerHTML:o,children:r,...m})=>{let a=r?r.map(t=>isNodeDOM(t)?t:e(t)):[];return e({tag:t,innerHTML:o,append:a,...m})},isNodeDOM=e=>e instanceof Element;export{createFormItem,isNodeDOM};
+/**
+ * 
+ * @param {*} htmlTag: object 
+ * @returns html element 
+ */
+import { buildTag } from './buildTag.js';
+
+const createFormItem = ({tag, innerHTML, children,  ...attributes}) => {
+    let listChilren = children? children.map(child => isNodeDOM(child) ? child: buildTag(child)):[];
+    let groupItem = buildTag({
+        tag,
+        innerHTML,
+        append: listChilren,
+        ...attributes,
+    })
+
+    return groupItem;
+}
+const isNodeDOM = element => {
+    return element instanceof Element;
+}
+export { createFormItem, isNodeDOM }

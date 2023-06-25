@@ -1,6 +1,6 @@
 import { Master, masterNotice, masterModal  } from './master.js';
 import { createFormItem } from './helpers/formgroup.js';
-import { Accordion } from './uxui/Accordion.js';
+import { Accordion } from './uxui/accordion.js';
 
 import { DELIVERY_TEMPLATE_API } from './helpers/const.js';
 

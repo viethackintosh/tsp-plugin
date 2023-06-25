@@ -1,5 +1,5 @@
 import { Master, masterModal, masterNotice } from './master.js';
-import { Accordion } from  './uxui/Accordion.js';
+import { Accordion } from  './uxui/accordion.js';
 import { createFormItem } from './helpers/formgroup.js'
 
 import { QUOTATION_TEMPLATE_API } from './helpers/const.js';

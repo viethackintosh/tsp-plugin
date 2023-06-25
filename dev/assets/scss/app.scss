@@ -3,6 +3,7 @@
 @import './tab.scss';
 @import './accordion.scss';
 @import './dragdrop.scss';
+@import './element.scss';
 
 * {
   box-sizing: border-box; }
@@ -225,14 +226,43 @@ p.hello__mes {
   fill: #113858; }
   .noprint__button:hover {
     fill: #2271b1; }
-
-.delete__button {
-  cursor: pointer;
-  width: 11px;
-  height: auto;
-  display: inline-block; 
-  padding-top: 2px; }
-
+.docform {
+  width: 640px;
+}
+.order {
+  &--document {
+    &:active {
+      outline: none;
+    }
+    .title {
+      display: inline;
+      outline: none;
+      &:hover {
+        color: #2271b1;
+      }
+     
+    }
+    position: relative;
+    .delete {
+      &__button {
+        font-size: 18px;
+        cursor: pointer;          
+        margin-left: 2px;    
+        &:hover {
+          color: #ff7300;
+        }
+      }
+    }
+  }
+}
+p{
+  &.title {
+    display: inline;
+    &:hover {
+      color :#2271b1;
+    }
+  }
+}
 .svg.--primary {
   fill: #113858; }
   .svg.--primary:hover {
