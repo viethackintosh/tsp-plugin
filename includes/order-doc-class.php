@@ -1,5 +1,4 @@
 <?php 
-//test
 require 'helpers/const.php';
 if (! class_exists('Orderdoc')) {
       class Orderdoc extends Tsp {
@@ -108,9 +107,9 @@ if (! class_exists('Orderdoc')) {
                               $exitDocument = $exist ? get_post_meta($ID,'orders',true): [];                   
                               $exitDocument[ $docName] = $files['name'];
             
-                              $updateResult = $exist? update_post_meta($ID, 'orders',  $exitDocument):                                         add_post_meta($owner->ID, 'orders', $exitDocument);
+                              $updateResult = $exist? update_post_meta($ID, 'orders',  $exitDocument):
+                                                      add_post_meta($ID, 'orders', $exitDocument);
                         }
-                        // lưu dữ liệu liên quan vào database
                            
                         return ['code' => 'success' ];
                         
@@ -129,6 +128,7 @@ if (! class_exists('Orderdoc')) {
                   $message = $updateResult === true? 'Đã cập nhật': 'Có lỗi! vui lòng kiểm tra lại';
                   return ['code'=> 200, 'result'=>$updateResult, 'message'=>  $message];
             }
+
             public function documentDownload(WP_REST_Request $req) {
                   return ['code' => 200, 'message' => 'có file'];
             }
