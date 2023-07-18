@@ -59,8 +59,8 @@ if (! class_exists('Master')) {
 
             if ($this->typeJS != 'module') return;
             add_filter('script_loader_tag', [$this,'moduleScript'] , 10, 3);
-
         }
+        
         public function moduleScript($tag, $handle, $src) {
             
             if ( $this->handle !== $handle ) {

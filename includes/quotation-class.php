@@ -122,19 +122,8 @@ if (! class_exists('Quotation')) {
         public function addtoQuotationButton() {
             
             $data = array('ID'=>(int)$_GET['post'], 'type' => 'Product', 'parentID'=>0);
-            woocommerce_wp_text_input( 
-            array( 
-                'id' => 'add_price_report', 
-                'class' => 'updateQuotation button', 
-                'label' => '',
-                'type' =>'button',
-                'value'=>'Lập báo giá',
-                'custom_attributes'=>  
-                    array(                        
-                        'data'=>json_encode($data)
-                    )
-                )
-            );
+            echo $addtopplink = '<p class="form-field _name_invoice_field"><a href=# class="updateQuotation button" data='.json_encode($data).'>Lập báo giá</a></p>';                
+            
         }
 
         /**
@@ -149,7 +138,7 @@ if (! class_exists('Quotation')) {
         //Thêm link add to delivery
         public function addOrderLink($link, $post) {
             $data = ['ID'=>$post->ID, 'type' => 'Order'];
-            $quotationLink = '<a href=# class="updateQuotation" data='.json_encode($data).'><p class="title">Lập báo giá</p></a>';				
+            $quotationLink = '<a href=# class="updateQuotation" data='.json_encode($data).'>Lập báo giá</a>';				
             return $quotationLink ;
         }
 

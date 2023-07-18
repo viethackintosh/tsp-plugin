@@ -29,6 +29,7 @@ const Quotation = function() {
     // 
     qt.otherPage = () => {
         let buttons = qt.listButtons();
+        console.log(buttons)
         Array.from(buttons).map(button => {
             let ownData = JSON.parse(button.getAttribute('data'));
             Object.assign(button, {
@@ -42,7 +43,8 @@ const Quotation = function() {
     // sự kiện thêm 1 nguồn dữ liệu vào báo giá xảy ra
     qt.updateQuotation = event => {
         event.preventDefault();
-        const target = event.target.closest('a');        
+        const target = event.target.closest('a');    
+        console.log([target]);
         let { type, ...other } = target.ownData;        
         return qt[`updateQuotation${type}`]({...other, quotation: qt.data});
     }
@@ -231,25 +233,7 @@ const Quotation = function() {
     qt.createSpecificationsProduct = ({parentID, productName, attributes}) => [
         qt.productName({ productName, data:{ ID: parentID, field: 'productName'},}),       
         ... ! attributes? []: qt.createAttribute({parentID, attributes})
-    ]      
-
-     // lấy layout quotation
-    /*qt.pushLayoutAndDataQuotation = async column => {
-        // đọc quotation.forms = [{ name: 'abc', template: 'templateHTML', status: 'active'}, {} ]
-        let layoutContent;
-        let forms = qt.data?.forms;
-        if ( forms ) {
-            layoutContent = forms.find(form => form.status === 'active').template;
-        } else {
-            layoutContent = await fchRequest({ 
-                ftchURI: `${QUOTATION_TEMPLATE_API}/templateone`,                
-            });
-            layoutContent.status = 'active';
-            qt.data.forms = [layoutContent];
-        }        
-        
-        column.innerHTML = layoutContent.template;
-    }*/
+    ]        
   
     /**
      * khai báo xử lý list buttons      *   
