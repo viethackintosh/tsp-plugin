@@ -7,7 +7,9 @@ if (! class_exists('Quotation')) {
         public $jsFile = 'assets/scripts/quotation.js'; // link dẫn đến file javascript dùng để xử lý tại client
         public $cssFile='assets/scss/app.min.css'; // link dẫn đến file css
 
-        public $pageSlug = 'baogia'; // thay thế menu slug
+        public $pageSlug = 'baogia'; // thay thế menu slug             
+        public $menuRole = 'manage_woocommerce';
+
         public static function get_instance(){
             if( is_null( self::$instance ) ){
                 self::$instance = new self();
@@ -21,7 +23,7 @@ if (! class_exists('Quotation')) {
                 $this->menuSlug,
                 '',
                 'Quotation',                
-                'manage_options',
+                $this->menuRole,
                 $this->pageSlug,
                 [$this,'pageContent'],
                 null

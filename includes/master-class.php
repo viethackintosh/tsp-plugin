@@ -8,6 +8,7 @@ if (! class_exists('Master')) {
         public $menuTitle='';
         public $pageSlug = ''; // tên trang được tạo trong wp-admin ex: http://localhost/wp-admin/admin.php?page=post
         public $pluginName ='';  
+        public $menuRole = '';
        
         public $handle =''; // id cho file javascript        
         public $jsFile = ''; // link dẫn đến file javascript dùng để xử lý tại client
@@ -38,7 +39,7 @@ if (! class_exists('Master')) {
             add_menu_page(
                 '',                
                 $this->menuTitle,
-                'manage_options',
+                $this->menuRole,
                 $this->menuSlug,                
                 [$this,'pageContent'],
                 '',

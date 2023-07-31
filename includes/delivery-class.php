@@ -3,8 +3,8 @@ if (! class_exists('Delivery')) {
     class Delivery extends Tsp {
         protected static $instance;	
 
-        public $menuTitle= 'Delivery';
-
+        public $menuTitle = 'Delivery';
+        public $menuRole = 'manage_woocommerce';
         public $pageSlug = 'phieugiaohang'; // tên trang được tạo trong wp-admin ex: http://localhost/wp-admin/admin.php?page=post
         
         public $handle = 'delivery';
@@ -23,7 +23,7 @@ if (! class_exists('Delivery')) {
                 $this->menuSlug,                 
                 'Delivery',
                 $this->menuTitle,
-                'manage_options',
+                $this->menuRole,
                 $this->pageSlug,
                 [$this,'pageContent'],
                 null
