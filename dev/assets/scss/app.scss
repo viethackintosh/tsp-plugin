@@ -1,9 +1,11 @@
-@import './modal.scss';
-@import './notice.scss';
-@import './tab.scss';
-@import './accordion.scss';
-@import './dragdrop.scss';
+@import '../script/modules/notice/scss/notice.scss';
+@import '../script/modules/accordion/scss/accordion.scss';
+@import '../script/modules/dragdrop/scss/dragdrop.scss';
+@import '../script/modules/dragdropfile/scss/dragdropfile.scss';
+@import '../script/modules/modal/scss/modal.scss';
 @import './element.scss';
+@import './print.scss';
+
 
 * {
   box-sizing: border-box; }

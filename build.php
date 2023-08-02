@@ -60,3 +60,4 @@ function removeDisallowFile($file) {
     return strpos($removeFile, $file) === false;
 }
 complier(__DIR__ .'/assets');
+

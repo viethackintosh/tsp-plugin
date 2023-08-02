@@ -5,8 +5,8 @@ if (! class_exists('Orderdoc')) {
             protected static $instance;	
 
             public $handle = 'orderdoc';
-            public $jsFile = 'assets/scripts/orderdoc.js'; // link dẫn đến file javascript dùng để xử lý tại client
-            public $cssFile= 'assets/scss/app.css'; // link dẫn đến file css
+            public $jsFile = 'assets/script/orderdoc.js'; // link dẫn đến file javascript dùng để xử lý tại client
+            public $cssFile= 'assets/scss/app.min.css'; // link dẫn đến file css
 
             public $uploaddir; 
 		public $uploaduri;
@@ -41,10 +41,10 @@ if (! class_exists('Orderdoc')) {
                        wp_register_style($this->handle.'css',$link.$this->cssFile,array(), 1.0,'all');
                        wp_enqueue_style($this->handle.'css');
                       
-                       wp_register_script('pdfviewer', '/wp-content/plugins/tinsinhphuc/assets/scripts/helpers/pdfobject.min.js', array(),1.0, true);
+                       wp_register_script('pdfviewer', '/wp-content/plugins/tinsinhphuc/assets/script/modules/helpers/pdfobject.min.js', array(),1.0, true);
                        wp_enqueue_script('pdfviewer');
                   }            
-      
+                  ///Volumes/printDesign/sites/php/indepgiasi/wp-content/plugins/tinsinhphuc/assets/script/modules/helpers/pdfobject.min.js
             }
 
             public function documentUploadLink() {
