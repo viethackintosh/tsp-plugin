@@ -1,8 +1,8 @@
 import Master from './master.js';
-import { Accordion } from  './modules/accordion/accordion.js';
-import { createFormItem } from './modules/helpers/formgroup.js'
+import Accordion from  './modules/accordion/accordion.js';
+import createFormItem from './modules/helpers/formgroup.js'
 import { QUOTATION_TEMPLATE_API } from './modules/helpers/const.js';
-import { trantlateNumbertoVNString } from  './modules/helpers/numbytext.js';
+import trantlateNumbertoVNString from  './modules/helpers/numbytext.js';
 
 const Quotation = function() {
     let qt = new Master();

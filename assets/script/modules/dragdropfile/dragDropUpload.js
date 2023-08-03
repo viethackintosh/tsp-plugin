@@ -1,5 +1,5 @@
-import { buildTag } from "../helpers/buildtag.js";
-import  { DragDrop }  from "../dragdrop/dragDrop.js";
+import  buildTag from "../helpers/buildtag.js";
+import  DragDrop from "../dragdrop/dragDrop.js";
 import { FILE_PDF_ICON, AI_FILE_ICON, DOC_FILE_ICON } from './filesSVGIcon.js';
 
 const UploadFiles = function() {
@@ -324,5 +324,5 @@ const UploadFiles = function() {
     return upFiles;
 }
  
-export { UploadFiles };
+export default UploadFiles;
  

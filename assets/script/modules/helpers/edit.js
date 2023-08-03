@@ -1,4 +1,4 @@
-import {  buildTag } from './buildTag.js';
+import buildTag from './buildtag.js';
 
 const Editor = function() {
     let e = this;
@@ -58,4 +58,4 @@ const Editor = function() {
 
 }
 
-export { Editor };
+export default Editor;

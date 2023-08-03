@@ -1,4 +1,4 @@
-import { buildTag } from "../helpers/buildtag.js";
+import buildTag from "../helpers/buildtag.js";
 
 const MODAL_HTML = `<div class="modal__wrapper"><div class="modal__element modal__header header">
 <div class="modal__icon md-icon"><div class=exclamation></div></div>
@@ -148,7 +148,6 @@ const Modal = function() {
 
     md.open = ({ config }) => {    
         if (config) Object.entries(config).map(([method, paramater])=> md[method]({modal: md.modal, paramater }));            
-        console.log(config);
         document.querySelector('html').classList.add('none-flow');         
         md.modal.main.classList.add('open');        
     }

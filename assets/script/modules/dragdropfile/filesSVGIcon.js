@@ -58,8 +58,6 @@ viewBox="0 0 115.3 122.9" xml:space="preserve">
    c-0.7,0-1.4-0.3-1.9-0.8C67.8,29.4,67.5,28.7,67.5,28L67.5,28z"/>
 </g>
 </svg>`;
-
-
  
 export {  FILE_PDF_ICON, AI_FILE_ICON, DOC_FILE_ICON };
  

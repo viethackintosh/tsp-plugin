@@ -65,7 +65,7 @@ if (! is_dir($rebuildDir)) mkdir($rebuildDir,0755, true);
 echo __DIR__ . PHP_EOL;
 if (strpos(COMPLIER, $ext) !== false) {     
       if ($ext == 'scss') {            
-            $origin = __DIR__ .'/dev/assets/scss/app.scss';
+            $origin = __DIR__ .'/dev/assets/css/app.scss';
             $link = __DIR__ . '/assets/scss/app.min.css';       
             echo 'Biên dịch file '. $origin . PHP_EOL ;    
             $sassRs = shell_exec('sass '.$origin .' ' . $link .' --style compressed'); 

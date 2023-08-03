@@ -42,4 +42,4 @@ const fchRequest = ({ftchURI, data}) => {
     })		
 }*/
 
-export { fchRequest, }  //xhrRequest };
+export default fchRequest;

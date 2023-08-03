@@ -1,9 +1,9 @@
 import Notice from './modules/notice/notice.js'; 
 import Modal from './modules/modal/modal.js';
 import fchRequest from './modules/helpers/fetch.js';
-import { createFormItem } from './modules/helpers/formgroup.js';
+import createFormItem from './modules/helpers/formgroup.js';
 
-import { Editor } from './modules/helpers/edit.js';
+import Editor from './modules/helpers/edit.js';
 import { USER_API, ORDER_API, PRODUCT_API} from './modules/helpers/const.js'
 
 const Master = function() {

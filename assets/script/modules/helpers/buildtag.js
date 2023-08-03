@@ -12,4 +12,4 @@
     return outTag;
 }
 
-export { buildTag };
+export default buildTag;

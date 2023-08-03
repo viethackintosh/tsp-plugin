@@ -1,9 +1,9 @@
-import { fchRequest } from './modules/helpers/fetch.js';
-import { createFormItem } from './modules/helpers/formgroup.js';
+import fchRequest from './modules/helpers/fetch.js';
+import createFormItem from './modules/helpers/formgroup.js';
 import Master from './master.js';
 import { URI_UPLOAD} from './modules/helpers/const.js';
-import { DragDrop } from './modules/dragdrop/dragDrop.js';
-import { UploadFiles } from './modules/dragdropfile/dragDropUpload.js';
+import DragDrop from './modules/dragdrop/dragDrop.js';
+import UploadFiles from './modules/dragdropfile/dragDropUpload.js';
 
 const DDocument = function() {
       const dd = new Master(); 
@@ -296,11 +296,13 @@ const DDocument = function() {
                         }
                              
                         dd.modal.close();
-                        dd.notice.open( {
-                              message: message[resData.code],
-                              icon: true,
-                              style: 'info',
-                              timer: 1500
+                        dd.notice.open({
+                              config: {
+                                    message: message[resData.code],
+                                    icon: true,
+                                    style: 'info',
+                                    timer: 1500
+                              }
                         });                 
       
                   } catch { }

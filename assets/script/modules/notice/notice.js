@@ -1,4 +1,4 @@
-import { buildTag } from '../helpers/buildtag.js';
+import buildTag from '../helpers/buildtag.js';
 /**
  * notice hiển thị thông báo bằng pop push 
  */
@@ -57,10 +57,13 @@ const NOTICE_HTML =`<div class="noticer__icon"><span class="dashicons"></span></
         else notice.notice.classList.add('--info');
      }
 
-    nt.timer = ({notice, paramater}) => setTimeout(()=>{
-        nt.close()
-    }, paramater);
+    nt.timer = ({notice, paramater}) =>{
+        let timeout = setTimeout(()=>{
+            nt.close(), clearTimeout(timeout)
+        }, paramater);
 
+    } 
+ 
     nt.icon = ({notice, paramater}) => {
         if (paramater === false) notice.noticeIcon.classList.add('hide');
     }

@@ -1,4 +1,4 @@
-import { createFormItem, isNodeDOM } from '../helpers/formgroup.js';
+import createFormItem, { isNodeDOM } from '../helpers/formgroup.js';
 
 const Accordion = function() {
     let acc = this;
@@ -118,5 +118,5 @@ const Accordion = function() {
     return acc;
 }
  
- export {  Accordion, };
+ export default  Accordion;
  

@@ -1,6 +1,6 @@
-import  Master from './master.js';
-import { createFormItem } from './modules/helpers/formgroup.js';
-import { Accordion } from './modules/accordion/accordion.js';
+import Master from './master.js';
+import createFormItem from './modules/helpers/formgroup.js';
+import Accordion from './modules/accordion/accordion.js';
 import { DELIVERY_TEMPLATE_API } from './modules/helpers/const.js';
 
 const Delivery = function () {

@@ -84,4 +84,4 @@ const trantlateNumbertoVNString = (bytext, value, postion) => {
      return bytext.filter(bt => bt !='' ).map(bt => bt.trim());
 
 }
-export { trantlateNumbertoVNString };
+export default trantlateNumbertoVNString;

@@ -1,4 +1,4 @@
-import { buildTag } from "../helpers/buildtag.js";
+import buildTag from "../helpers/buildtag.js";
 
 const DragDrop = function() {
     let dad = this;
@@ -215,5 +215,5 @@ const DragDrop = function() {
     return dad;
 }
  
-export  { DragDrop } ;
+export default DragDrop;
  

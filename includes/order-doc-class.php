@@ -116,7 +116,7 @@ if (! class_exists('Orderdoc')) {
                   }
                   
                   return ['code' => 'error'];
-            }
+            } 
             
             public function documentRemove(WP_REST_Request $req) {
                   $body = json_decode($req->get_body()); 
@@ -125,7 +125,7 @@ if (! class_exists('Orderdoc')) {
                   $exitDocument[$owner->name] = '';
                   $updateResult = update_post_meta($owner->ID, 'orders',  $exitDocument);
 
-                  $message = $updateResult === true? 'Đã cập nhật': 'Có lỗi! vui lòng kiểm tra lại';
+                  $message = $updateResult === true? 'Đã xoá file': 'Có lỗi! vui lòng kiểm tra lại';
                   return ['code'=> 200, 'result'=>$updateResult, 'message'=>  $message];
             }
 
