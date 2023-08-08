@@ -1,41 +1,4 @@
 <?php
-// outputs e.g.  somefile.txt was last modified: December 29 2002 22:16:23.
-/**
- * $dir: đường dẫn thư mục gốc cần tìm file vừa được save
- * $fileIn: đường dẫn đến file hiện là file vừa được sửa (có tên file.ext)
- */
-$mirror = ['target'=> 'assets/scss/'];
-$api =['js'=>'https://www.toptal.com/developers/javascript-minifier/api/raw',
-      'css'=>'https://www.toptal.com/developers/cssminifier/api/raw',
-      'html'=>'https://www.toptal.com/developers/html-minifier/api/raw'
-      ];
-define('COMPLIER', 'scss|html|js');
-
-// trả về file sửa cuối cùng
-function lastUpdateFile($dir, $checkedFile) {    
-      $fileIn = $checkedFile;
-      if (is_dir($dir)) {            
-            $listIn = array_filter(scandir($dir) ,'removeOrginSub');
-            if (empty($listIn)) return $fileIn;
-            while (!empty($listIn)) {
-                  $checkFile = $dir . '/'. array_shift($listIn);
-                  if (is_file($checkFile)) {
-                        if ($fileIn != '') $fileIn = filemtime($fileIn) > filemtime($checkFile) ? $fileIn : $checkFile;   
-                        else $fileIn = $checkFile; 
-                  } else $fileIn = lastUpdateFile( $checkFile, $fileIn);
-            }
-      }
-      return $fileIn;
-} 
-
-// trả về đường dẫn cơ sở
-
-
-function removeOrginSub($fileName) {
-      $removeFile = '.|..|.sass-cache|app.css.map|.DS_Store';
-      return strpos($removeFile, $fileName) === false;
-}
-
 function getCompressFromAPI($api, $content) {
       $ch = curl_init();
 
@@ -56,29 +19,46 @@ function getCompressFromAPI($api, $content) {
       return $minified;
 }
 
-$lastUpdateFile = lastUpdateFile(__DIR__ ,''); //đường dẫn đến file được lưu lại sau cùng
-$fileInfo = pathinfo($lastUpdateFile); // lấy thông tin của file
-$targetDir =  $fileInfo['dirname']; // thư mục chứa file thay đổi sau cùng
-$ext = $fileInfo['extension']; // lấy phần mở rộng của file thay đổi sau cùng
-$rebuildDir = str_replace('dev/', '', $targetDir);
+$mirror = ['target'=> 'assets/scss/'];
+$api =['js'=>'https://www.toptal.com/developers/javascript-minifier/api/raw',
+      'css'=>'https://www.toptal.com/developers/cssminifier/api/raw',
+      'html'=>'https://www.toptal.com/developers/html-minifier/api/raw'
+      ];
+define('COMPLIER', 'scss|html|js');
+
+$dir = $argv[1];
+$file = $argv[3];
+// outputs e.g.  somefile.txt was last modified: December 29 2002 22:16:23.
+/**
+ * $dir: đường dẫn thư mục gốc cần tìm file vừa được save
+ * $fileIn: đường dẫn đến file hiện là file vừa được sửa (có tên file.ext)
+ */
+ // thư mục chứa file thay đổi sau cùng
+list($name,$ext) = explode('.', $file);
+
+$rebuildDir = str_replace('dev/', '', $dir );
+
 if (! is_dir($rebuildDir)) mkdir($rebuildDir,0755, true);
-echo __DIR__ . PHP_EOL;
+
 if (strpos(COMPLIER, $ext) !== false) {     
       if ($ext == 'scss') {            
-            $origin = __DIR__ .'/dev/assets/css/app.scss';
+            $origin = $dir .'app.scss';
             $link = __DIR__ . '/assets/scss/app.min.css';       
-            echo 'Biên dịch file '. $origin . PHP_EOL ;    
-            $sassRs = shell_exec('sass '.$origin .' ' . $link .' --style compressed'); 
-      } else { 
+            echo 'Biên dịch file '. $origin . PHP_EOL;    
+            echo 'Thành file '. $link . PHP_EOL;    
 
-            $link = $rebuildDir .'/'.$fileInfo['basename'];
-            $kindApi = $api[$ext];
-            $content = file_get_contents($lastUpdateFile);
+            $sassRs = shell_exec('sass '. $origin .' ' . $link ." --style compressed"); 
+      } else {
+            $complierFile =  $dir . $file;
+            $link = $rebuildDir . $file;            
+            if (copy($complierFile, $link))  echo "--- đã biên dịch {$file} --- "; 
+            else  echo "--- Biên dịch {$file} thất bại! --- "; 
+            //$kindApi = $api[$ext];
+            //$content = file_get_contents($complierFile);
             //$minified = getCompressFromAPI($kindApi, $content);            
-            $fp = fopen($link,'w');
-            fwrite($fp, $content);
-            fclose($fp);
-            echo '--- đã biên dịch --- '; 
+            //$fp = fopen($link,'w');
+            //fwrite($fp, $content);
+            //fclose($fp);
       } 
 }
 

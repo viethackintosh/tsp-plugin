@@ -5,8 +5,7 @@ import { DELIVERY_TEMPLATE_API } from './modules/helpers/const.js';
 
 const Delivery = function () {
   let dl = new Master();
-  dl.storageName = 'phieugiaohang';
-
+  dl.storageName = 'phieugiaohang';  
   dl.title = 'Phiếu giao hàng';
   // tạo lại phần khởi tạo đặt thù của quotation
   dl.updateDelivery = async ({ event }) => {
